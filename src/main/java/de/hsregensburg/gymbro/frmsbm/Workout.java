@@ -18,6 +18,13 @@ public class Workout {
         this.title = t;
     }
 
+    public void update_Workout(int s, int e, String w, String t) {
+        this.start_time = s;
+        this.end_time = e;
+        this.weekday = w;
+        this.title = t;
+    }
+
     public int getStart_time() {
         return start_time;
     }

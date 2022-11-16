@@ -57,6 +57,26 @@
 </div>
 
 <table>
+  <tr>
+    <th>Workout Name</th>
+    <th>Weekday</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+  </tr>
+  <tr th:each="workout : ${workouts}">
+    <td th:text="${workout.title}" />
+    <td th:text="${workout.weekday}" />
+    <td th:text="${workout.start_time}" />
+    <td th:text="${workout.end_time}" />
+    <td>
+      <form th:action="@{workout_generator/edit}" >
+        <input type="submit" name="title" th:value="${workout.title}" />
+      </form>
+    </td>
+  </tr>
+</table>
+
+<table>
   <tbody>
   <tr>
     <th>/</th>

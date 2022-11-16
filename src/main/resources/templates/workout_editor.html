@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    </style>
+</head>
+<body>
+
+<h2>Workout:</h2>
+
+<form action="/edited_workoutplan" method="get">
+    <input type="text" id="wname" name="wname", th:value="${workout.title}">
+    <br><br>
+    <label for="wkdy">Weekday:</label>
+    <select name="wkdy" id="wkdy">
+        <option th:value="${workout.weekday}" th:text="${workout.weekday}" selected="selected" hidden></option>
+        <option value="Mon">Monday</option>
+        <option value="Tue">Tuesday</option>
+        <option value="Wed">Wednesday</option>
+        <option value="Thu">Thursday</option>
+        <option value="Fri">Friday</option>
+        <option value="Sat">Saturday</option>
+        <option value="Sun">Sunday</option>
+    </select>
+    <br><br>
+    <label for="starter">Start:</label>
+    <select name="starter" id="starter">
+        <option th:value="${workout.start_time}" th:text="${workout.start_time}" selected="selected" hidden></option>
+        <option value="0000">00:00</option>
+        <option value="0100">01:00</option>
+        <option value="0200">02:00</option>
+        <option value="0300">03:00</option>
+        <option value="0400">04:00</option>
+        <option value="0500">05:00</option>
+        <option value="0600">06:00</option>
+        <option value="0700">07:00</option>
+        <option value="0800">08:00</option>
+        <option value="0900">09:00</option>
+        <option value="1000">10:00</option>
+        <option value="1100">11:00</option>
+        <option value="1200">12:00</option>
+        <option value="1300">13:00</option>
+        <option value="1400">14:00</option>
+        <option value="1500">15:00</option>
+        <option value="1600">16:00</option>
+        <option value="1700">17:00</option>
+        <option value="1800">18:00</option>
+        <option value="1900">19:00</option>
+        <option value="2000">20:00</option>
+        <option value="2100">21:00</option>
+        <option value="2200">22:00</option>
+        <option value="2300">23:00</option>
+    </select>
+    <br><br>
+    <label for="ender">End:</label>
+    <select name="ender" id="ender">
+        <option th:value="${workout.end_time}" th:text="${workout.end_time}" selected="selected" hidden></option>
+        <option value="0000">00:00</option>
+        <option value="0100">01:00</option>
+        <option value="0200">02:00</option>
+        <option value="0300">03:00</option>
+        <option value="0400">04:00</option>
+        <option value="0500">05:00</option>
+        <option value="0600">06:00</option>
+        <option value="0700">07:00</option>
+        <option value="0800">08:00</option>
+        <option value="0900">09:00</option>
+        <option value="1000">10:00</option>
+        <option value="1100">11:00</option>
+        <option value="1200">12:00</option>
+        <option value="1300">13:00</option>
+        <option value="1400">14:00</option>
+        <option value="1500">15:00</option>
+        <option value="1600">16:00</option>
+        <option value="1700">17:00</option>
+        <option value="1800">18:00</option>
+        <option value="1900">19:00</option>
+        <option value="2000">20:00</option>
+        <option value="2100">21:00</option>
+        <option value="2200">22:00</option>
+        <option value="2300">23:00</option>
+    </select>
+    <br><br>
+    <input type="hidden" id="old_title" name="old_title" th:value="${workout.title}">
+    <input type="submit" value="Save">
+</form>
+
+<form action="/deleted_workoutplan" method="get">
+    <input type="hidden" id="del_title" name="del_title" th:value="${workout.title}">
+    <input type="submit" value="Delete">
+</form>
+
+</body>
+</html>
