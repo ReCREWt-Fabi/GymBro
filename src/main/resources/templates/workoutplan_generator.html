@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #ddd;}
+
+    .dropdown:hover .dropdown-content {display: block;}
+  </style>
+</head>
+<body>
+
+<div>
+  <h2>Workout Plan:</h2>
+  <form action="/workoutplan_generator" method="get">
+    <input type="text" id="workoutplan_name" name="workoutplan_name", value="My Workoutplan">
+    <br><br>
+    <input type="submit" value="Change name">
+  </form>
+</div>
+
+<div class="dropdown">
+  <p>Template:</p>
+  <button class="dropbtn">None</button>
+  <div class="dropdown-content">
+    <a href="/template_used?template=0001">Increase Leg Muscles</a>
+    <a href="/template_used?template=0002">Increase Chest Muscles</a>
+    <a href="/template_used?template=0003">Increase Back Muscles</a>
+  </div>
+</div>
+
+<form action="/print_plan">
+  <input type="submit" value="View Plan" />
+</form>
+
+
+<div class="btns">
+  <button type="button" onclick="alert('Hello world!')">Save</button>
+  <button type="button" onclick="alert('Hello world!')">Share</button>
+  <form action="workout_generator">
+    <input type="submit" value="Add Workout" />
+  </form>
+  <button type="button" onclick="alert('Hello world!')">Add Break</button>
+</div>
+
+<table>
+  <tr>
+    <th>Workout Name</th>
+    <th>Weekday</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+  </tr>
+  <tr th:each="workout : ${workouts}">
+    <td th:text="${workout.title}" />
+    <td th:text="${workout.weekday}" />
+    <td th:text="${workout.start_time}" />
+    <td th:text="${workout.end_time}" />
+    <td>
+      <form th:action="@{workout_generator/edit}" >
+        <input type="submit" name="title" th:value="${workout.title}" />
+      </form>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tbody>
+  <tr>
+    <th>/</th>
+    <th>Mon</th>
+    <th>Tue</th>
+    <th>Wed</th>
+    <th>Thu</th>
+    <th>Fri</th>
+    <th>Sat</th>
+    <th>Sun</th>
+  </tr>
+  <tr>
+    <td>00:00</td>
+    <td id="Mon0000">&nbsp;</td>
+    <td id="Tue0000">&nbsp;</td>
+    <td id="Wed0000">&nbsp;</td>
+    <td id="Thu0000">&nbsp;</td>
+    <td id="Fri0000">&nbsp;</td>
+    <td id="Sat0000">&nbsp;</td>
+    <td id="Sun0000">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>01:00</td>
+    <td id="Mon0100">&nbsp;</td>
+    <td id="Tue0100">&nbsp;</td>
+    <td id="Wed0100">&nbsp;</td>
+    <td id="Thu0100">&nbsp;</td>
+    <td id="Fri0100">&nbsp;</td>
+    <td id="Sat0100">&nbsp;</td>
+    <td id="Sun0100">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>02:00</td>
+    <td id="Mon0200">&nbsp;</td>
+    <td id="Tue0200">&nbsp;</td>
+    <td id="Wed0200">&nbsp;</td>
+    <td id="Thu0200">&nbsp;</td>
+    <td id="Fri0200">&nbsp;</td>
+    <td id="Sat0200">&nbsp;</td>
+    <td id="Sun0200">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>03:00</td>
+    <td id="Mon0300">&nbsp;</td>
+    <td id="Tue0300">&nbsp;</td>
+    <td id="Wed0300">&nbsp;</td>
+    <td id="Thu0300">&nbsp;</td>
+    <td id="Fri0300">&nbsp;</td>
+    <td id="Sat0300">&nbsp;</td>
+    <td id="Sun0300">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>04:00</td>
+    <td id="Mon0400">&nbsp;</td>
+    <td id="Tue0400">&nbsp;</td>
+    <td id="Wed0400">&nbsp;</td>
+    <td id="Thu0400">&nbsp;</td>
+    <td id="Fri0400">&nbsp;</td>
+    <td id="Sat0400">&nbsp;</td>
+    <td id="Sun0400">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>05:00</td>
+    <td id="Mon0500">&nbsp;</td>
+    <td id="Tue0500">&nbsp;</td>
+    <td id="Wed0500">&nbsp;</td>
+    <td id="Thu0500">&nbsp;</td>
+    <td id="Fri0500">&nbsp;</td>
+    <td id="Sat0500">&nbsp;</td>
+    <td id="Sun0500">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>06:00</td>
+    <td id="Mon0600">&nbsp;</td>
+    <td id="Tue0600">&nbsp;</td>
+    <td id="Wed0600">&nbsp;</td>
+    <td id="Thu0600">&nbsp;</td>
+    <td id="Fri0600">&nbsp;</td>
+    <td id="Sat0600">&nbsp;</td>
+    <td id="Sun0600">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>07:00</td>
+    <td id="Mon0700">&nbsp;</td>
+    <td id="Tue0700">&nbsp;</td>
+    <td id="Wed0700">&nbsp;</td>
+    <td id="Thu0700">&nbsp;</td>
+    <td id="Fri0700">&nbsp;</td>
+    <td id="Sat0700">&nbsp;</td>
+    <td id="Sun0700">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>08:00</td>
+    <td id="Mon0800">&nbsp;</td>
+    <td id="Tue0800">&nbsp;</td>
+    <td id="Wed0800">&nbsp;</td>
+    <td id="Thu0800">&nbsp;</td>
+    <td id="Fri0800">&nbsp;</td>
+    <td id="Sat0800">&nbsp;</td>
+    <td id="Sun0800">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>09:00</td>
+    <td id="Mon0900">&nbsp;</td>
+    <td id="Tue0900">&nbsp;</td>
+    <td id="Wed0900">&nbsp;</td>
+    <td id="Thu0900">&nbsp;</td>
+    <td id="Fri0900">&nbsp;</td>
+    <td id="Sat0900">&nbsp;</td>
+    <td id="Sun0900">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>10:00</td>
+    <td id="Mon1000">&nbsp;</td>
+    <td id="Tue1000">&nbsp;</td>
+    <td id="Wed1000">&nbsp;</td>
+    <td id="Thu1000">&nbsp;</td>
+    <td id="Fri1000">&nbsp;</td>
+    <td id="Sat1000">&nbsp;</td>
+    <td id="Sun1000">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>11:00</td>
+    <td id="Mon1100">&nbsp;</td>
+    <td id="Tue1100">&nbsp;</td>
+    <td id="Wed1100">&nbsp;</td>
+    <td id="Thu1100">&nbsp;</td>
+    <td id="Fri1100">&nbsp;</td>
+    <td id="Sat1100">&nbsp;</td>
+    <td id="Sun1100">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>12:00</td>
+    <td id="Mon1200">&nbsp;</td>
+    <td id="Tue1200">&nbsp;</td>
+    <td id="Wed1200">&nbsp;</td>
+    <td id="Thu1200">&nbsp;</td>
+    <td id="Fri1200">&nbsp;</td>
+    <td id="Sat1200">&nbsp;</td>
+    <td id="Sun1200">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>13:00</td>
+    <td id="Mon1300">&nbsp;</td>
+    <td id="Tue1300">&nbsp;</td>
+    <td id="Wed1300">&nbsp;</td>
+    <td id="Thu1300">&nbsp;</td>
+    <td id="Fri1300">&nbsp;</td>
+    <td id="Sat1300">&nbsp;</td>
+    <td id="Sun1300">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>14:00</td>
+    <td id="Mon1400">&nbsp;</td>
+    <td id="Tue1400">&nbsp;</td>
+    <td id="Wed1400">&nbsp;</td>
+    <td id="Thu1400">&nbsp;</td>
+    <td id="Fri1400">&nbsp;</td>
+    <td id="Sat1400">&nbsp;</td>
+    <td id="Sun1400">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>15:00</td>
+    <td id="Mon1500">&nbsp;</td>
+    <td id="Tue1500">&nbsp;</td>
+    <td id="Wed1500">&nbsp;</td>
+    <td id="Thu1500">&nbsp;</td>
+    <td id="Fri1500">&nbsp;</td>
+    <td id="Sat1500">&nbsp;</td>
+    <td id="Sun1500">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>16:00</td>
+    <td id="Mon1600">&nbsp;</td>
+    <td id="Tue1600">&nbsp;</td>
+    <td id="Wed1600">&nbsp;</td>
+    <td id="Thu1600">&nbsp;</td>
+    <td id="Fri1600">&nbsp;</td>
+    <td id="Sat1600">&nbsp;</td>
+    <td id="Sun1600">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>17:00</td>
+    <td id="Mon1700">&nbsp;</td>
+    <td id="Tue1700">&nbsp;</td>
+    <td id="Wed1700">&nbsp;</td>
+    <td id="Thu1700">&nbsp;</td>
+    <td id="Fri1700">&nbsp;</td>
+    <td id="Sat1700">&nbsp;</td>
+    <td id="Sun1700">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>18:00</td>
+    <td id="Mon1800">&nbsp;</td>
+    <td id="Tue1800">&nbsp;</td>
+    <td id="Wed1800">&nbsp;</td>
+    <td id="Thu1800">&nbsp;</td>
+    <td id="Fri1800">&nbsp;</td>
+    <td id="Sat1800">&nbsp;</td>
+    <td id="Sun1800">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>19:00</td>
+    <td id="Mon1900">&nbsp;</td>
+    <td id="Tue1900">&nbsp;</td>
+    <td id="Wed1900">&nbsp;</td>
+    <td id="Thu1900">&nbsp;</td>
+    <td id="Fri1900">&nbsp;</td>
+    <td id="Sat1900">&nbsp;</td>
+    <td id="Sun1900">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>20:00</td>
+    <td id="Mon2000">&nbsp;</td>
+    <td id="Tue2000">&nbsp;</td>
+    <td id="Wed2000">&nbsp;</td>
+    <td id="Thu2000">&nbsp;</td>
+    <td id="Fri2000">&nbsp;</td>
+    <td id="Sat2000">&nbsp;</td>
+    <td id="Sun2000">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>21:00</td>
+    <td id="Mon2100">&nbsp;</td>
+    <td id="Tue2100">&nbsp;</td>
+    <td id="Wed2100">&nbsp;</td>
+    <td id="Thu2100">&nbsp;</td>
+    <td id="Fri2100">&nbsp;</td>
+    <td id="Sat2100">&nbsp;</td>
+    <td id="Sun2100">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>22:00</td>
+    <td id="Mon2200">&nbsp;</td>
+    <td id="Tue22000">&nbsp;</td>
+    <td id="Wed2200">&nbsp;</td>
+    <td id="Thu2200">&nbsp;</td>
+    <td id="Fri2200">&nbsp;</td>
+    <td id="Sat2200">&nbsp;</td>
+    <td id="Sun2200">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>23:00</td>
+    <td id="Mon2300">&nbsp;</td>
+    <td id="Tue2300">&nbsp;</td>
+    <td id="Wed2300">&nbsp;</td>
+    <td id="Thu2300">&nbsp;</td>
+    <td id="Fri2300">&nbsp;</td>
+    <td id="Sat2300">&nbsp;</td>
+    <td id="Sun2300">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>24:00</td>
+    <td id="Mon2400">&nbsp;</td>
+    <td id="Tue2400">&nbsp;</td>
+    <td id="Wed2400">&nbsp;</td>
+    <td id="Thu2400">&nbsp;</td>
+    <td id="Fri2400">&nbsp;</td>
+    <td id="Sat2400">&nbsp;</td>
+    <td id="Sun2400">&nbsp;</td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

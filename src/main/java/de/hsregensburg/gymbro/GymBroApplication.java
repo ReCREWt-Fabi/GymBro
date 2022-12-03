@@ -1,4 +1,4 @@
-package de.hsregensburg.gymbro.gymbro;
+package de.hsregensburg.gymbro;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
