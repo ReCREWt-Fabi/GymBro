@@ -1,4 +1,4 @@
-package de.hsregensburg.gymbro.frmsbm;
+package de.othr.im.gymbro.frmsbm;
 
 import java.util.Objects;
 

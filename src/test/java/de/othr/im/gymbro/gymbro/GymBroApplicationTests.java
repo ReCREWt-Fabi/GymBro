@@ -1,4 +1,4 @@
-package de.hsregensburg.gymbro.gymbro;
+package de.othr.im.gymbro.gymbro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

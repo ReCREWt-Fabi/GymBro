@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/base-layout}">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div style="width: 60%" align="left">
+
+        <h1>Sign up for GymBro!</h1>
+        <form th:object="${userForm}" th:action="@{/unauthenticated/signup}" method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" type="text" class="form-control" th:field="*{name}"/>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}"
+                   th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-Mail</label>
+                <input class="form-control" id="email" type="text" th:field="*{email}"/>
+                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}"
+                   th:text="${#strings.listJoin(#fields.errors('email'), ', ')}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" class="form-control" type="text" th:field="*{password}"/>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
+                   th:text="${#strings.listJoin(#fields.errors('password'), ', ')}"/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
