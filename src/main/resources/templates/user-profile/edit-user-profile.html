@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/base-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Edit User Profile</h1>
+        <form class="text-start" method="post" th:action="@{/user_profile/edit/submit}" th:object="${userForm}">
+            <input hidden id="id" th:field="*{id}"/>
+            <input hidden id="password" th:field="*{password}"/>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="name">Name</label>
+                <input class="form-control" id="name" th:field="*{name}" type="text"/>
+                <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('name')}"
+                   th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="email">E-Mail</label>
+                <input class="form-control" id="email" th:field="*{email}" type="text"/>
+                <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('email')}"
+                   th:text="${#strings.listJoin(#fields.errors('email'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="birthDate">Birthday</label>
+                <input class="form-control" id="birthDate" th:field="*{birthDate}" type="date"/>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('birthDate')}"
+                   th:text="${#strings.listJoin(#fields.errors('birthDate'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="height">Height (in cm)</label>
+                <input class="form-control" id="height" th:field="*{height}" type="number"/>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('height')}"
+                   th:text="${#strings.listJoin(#fields.errors('height'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="weight">Weight (in kg)</label>
+                <input class="form-control" id="weight" th:field="*{weight}" type="number"/>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('weight')}"
+                   th:text="${#strings.listJoin(#fields.errors('weight'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="restTime">Rest Time (in min)</label>
+                <input class="form-control" id="restTime" th:field="*{restTime}" type="number"/>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('restTime')}"
+                   th:text="${#strings.listJoin(#fields.errors('restTime'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="gender">Gender</label>
+                <select class="form-control" id="gender" th:field="*{gender}">
+                    <option th:each="gender : ${T(de.othr.im.gymbro.model.Gender).values()}"
+                            th:text="${gender.label}" th:value="${gender}"></option>
+                </select>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('gender')}"
+                   th:text="${#strings.listJoin(#fields.errors('gender'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="workoutGoal">Workout Goal</label>
+                <select class="form-control" id="workoutGoal" th:field="*{workoutGoal}">
+                    <option th:each="workoutGoal : ${T(de.othr.im.gymbro.model.WorkoutGoal).values()}"
+                            th:text="${workoutGoal.label}" th:value="${workoutGoal}"></option>
+                </select>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('workoutGoal')}"
+                   th:text="${#strings.listJoin(#fields.errors('workoutGoal'), ', ')}"/>
+            </div>
+
+
+            <button class="btn btn-primary" type="submit">Submit Changes</button>
+            <a class="btn btn-link" href="/user_profile">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

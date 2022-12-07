@@ -35,7 +35,6 @@ public class LoginService {
             mv.setViewName("login/signup");
             return mv;
         }
-        user.setEmail(user.getEmail().trim());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         mv.setViewName("redirect:/onboarding");

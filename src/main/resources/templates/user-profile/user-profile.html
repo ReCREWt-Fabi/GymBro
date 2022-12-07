@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/base-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">User Profile</h1>
+        <div class="text-start">
+            <p class="pb-3">
+                <span class="fw-bold">Username: </span>
+                <span th:text="${userData.name}"/>
+            </p>
+            <p class="pb-3">
+                <span class="fw-bold">E-Mail: </span>
+                <span th:text="${userData.email}"/>
+            </p>
+            <p class="pb-3">
+                <span class="fw-bold">Birthday: </span>
+                <span th:text="${userData.birthDate != null} ? ${#temporals.format(userData.birthDate, 'dd.MM.yyyy')} : 'Not specified'"/>
+            </p>
+            <p class="pb-3">
+                <span class="fw-bold">Height: </span>
+                <span th:text="${userData.height != 0} ? ${userData.height} + 'kg' : 'Not specified'"/>
+            </p>
+            <p class="pb-3">
+                <span class="fw-bold">Weight: </span>
+                <span th:text="${userData.weight != 0} ? ${userData.weight} + 'cm' : 'Not specified'"/>
+            </p>
+            <p class="pb-3">
+                <span class="fw-bold">Rest time: </span>
+                <span th:text="${userData.restTime != 0} ? ${userData.restTime} + ' min' : 'Not specified'"/>
+            </p>
+            <p class="pb-3">
+                <span class="fw-bold">Gender: </span>
+                <span th:text="${userData.gender != null} ? ${userData.gender.label} : 'Not specified'"/>
+            </p>
+            <p class="pb-3">
+                <span class="fw-bold">Workout Goal: </span>
+                <span th:text="${userData.workoutGoal != null} ? ${userData.workoutGoal.label} : 'Not specified'"/>
+            </p>
+        </div>
+        <a class="btn btn-primary" href="user_profile/edit">Edit Profile</a>
+    </div>
+</div>
+</body>
+</html>

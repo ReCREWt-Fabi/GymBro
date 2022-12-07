@@ -8,9 +8,17 @@ import java.util.Collection;
 
 public class GymBroUserDetails implements UserDetails {
 
-    private final User user;
+    private User user;
 
     public GymBroUserDetails(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
         this.user = user;
     }
 
