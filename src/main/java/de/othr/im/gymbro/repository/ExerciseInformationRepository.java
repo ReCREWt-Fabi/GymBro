@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface ExerciseInformationRepository {
 
-    List<ExerciseInformation> getAll();
+    List<ExerciseInformation> findAll();
 
-    List<ExerciseInformation> getAllForCategory(final ExerciseCategory category);
+    List<ExerciseInformation> findByCategory(final ExerciseCategory category);
 
-    ExerciseInformation getExerciseInformation(final String exerciseType);
+    ExerciseInformation findById(final String exerciseType);
 
 }

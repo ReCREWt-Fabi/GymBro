@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +26,7 @@ public class AutoPopulateExerciseInformationHandler implements AuthenticationSuc
         for (final WorkoutPlan workoutPlan : user.getPlans()) {
             for (final Exercise exercise : workoutPlan.getExercises()) {
                 final String exerciseType = exercise.getExerciseType();
-                final ExerciseInformation information = exerciseInformationRepository.getExerciseInformation(exerciseType);
+                final ExerciseInformation information = exerciseInformationRepository.findById(exerciseType);
                 exercise.setExerciseInformation(information);
             }
         }
