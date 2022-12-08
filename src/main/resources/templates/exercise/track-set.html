@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Track Set</h1>
+        <form class="text-start" method="post" th:action="@{/exercise_details/{id}/track_set/submit(id=${exercise.id})}"
+              th:object="${set}">
+            <input hidden id="id" th:field="*{id}"/>
+            <input hidden id="exercise" th:field="*{exercise}"/>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="reps">Reps</label>
+                <input class="form-control" id="reps" th:field="*{reps}" type="number"/>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('reps')}"
+                   th:text="${#strings.listJoin(#fields.errors('reps'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="weight">Weight (in kg)</label>
+                <input class="form-control" id="weight" th:field="*{weight}" type="number"/>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('weight')}"
+                   th:text="${#strings.listJoin(#fields.errors('weight'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="notes">Notes</label>
+                <input class="form-control" id="notes" th:field="*{notes}" type="text"/>
+                <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('notes')}"
+                   th:text="${#strings.listJoin(#fields.errors('notes'), ', ')}"/>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Submit Changes</button>
+            <a class="btn btn-link" th:href="@{/exercise_details/{id}(id=${exercise.id})}">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
