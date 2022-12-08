@@ -1,7 +1,7 @@
 package de.othr.im.gymbro.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 @Entity
@@ -13,9 +13,14 @@ public class ExerciseSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(value = 1, message = "Repetitions must be at least 1")
+
+    @Positive
+    private int ordering;
+
+    @Positive
     private int reps;
-    @Min(value = 1, message = "Weight must be at least 1")
+
+    @Positive
     private int weight;
     @Temporal(TemporalType.TIMESTAMP)
     private Date completedAt;
@@ -34,6 +39,15 @@ public class ExerciseSet {
 
     public void setCompletedAt(Date completedAt) {
         this.completedAt = completedAt;
+    }
+
+    public ExerciseSet(){}
+
+    public ExerciseSet(final int ordering, final int reps, final int weight, final Exercise exercise) {
+        this.ordering = ordering;
+        this.reps = reps;
+        this.weight = weight;
+        this.exercise = exercise;
     }
 
     public Exercise getExercise() {
@@ -66,6 +80,14 @@ public class ExerciseSet {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public Integer getOrdering() {
+        return ordering;
+    }
+
+    public void setOrdering(Integer order) {
+        this.ordering = order;
     }
 
     public boolean isCompleted() {

@@ -25,7 +25,7 @@ public class LoginService {
 
     public ModelAndView signupUser(final User user, final BindingResult result) {
         final ModelAndView mv = new ModelAndView();
-        if (result.hasErrors()) {
+        if (result.hasFieldErrors("email") || result.hasFieldErrors("password") || result.hasFieldErrors("name")) {
             mv.setViewName("login/signup");
             return mv;
         }

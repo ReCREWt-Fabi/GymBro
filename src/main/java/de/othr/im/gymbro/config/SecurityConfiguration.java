@@ -24,11 +24,11 @@ public class SecurityConfiguration {
     GymBroUserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity http, final AutoPopulateExerciseInformationHandler handler) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/unauthenticated/**", "/error/**").permitAll()
                 .anyRequest().authenticated()
-                .and().csrf().disable().formLogin().loginPage("/unauthenticated/login").defaultSuccessUrl("/home")
+                .and().csrf().disable().formLogin().loginPage("/unauthenticated/login").defaultSuccessUrl("/home").successHandler(handler)
                 .and().logout().logoutUrl("/unauthenticated/logout").logoutSuccessUrl("/unauthenticated/login?logout").invalidateHttpSession(true).clearAuthentication(true)
                 .permitAll();
         return http.build();

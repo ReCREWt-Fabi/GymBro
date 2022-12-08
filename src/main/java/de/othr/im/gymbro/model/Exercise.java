@@ -15,6 +15,12 @@ public class Exercise {
      */
     private String exerciseType;
 
+    /**
+     * Automatically populated upon deserialization.
+     */
+    @Transient
+    private ExerciseInformation exerciseInformation;
+
     @ManyToOne
     @JoinColumn(name = "idplan")
     private WorkoutPlan plan;
@@ -41,5 +47,13 @@ public class Exercise {
 
     public void setPlan(WorkoutPlan plan) {
         this.plan = plan;
+    }
+
+    public ExerciseInformation getExerciseInformation() {
+        return exerciseInformation;
+    }
+
+    public void setExerciseInformation(ExerciseInformation exerciseInformation) {
+        this.exerciseInformation = exerciseInformation;
     }
 }

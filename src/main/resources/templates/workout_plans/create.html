@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Your Workout Plan</h1>
+        <form class="text-start" method="post" th:action="@{/workout_plans/create/submit}" th:object="${plan}">
+
+            <div class="form-group pb-3">
+                <input class="form-control" id="name" th:field="*{name}" type="text" placeholder="Workout Plan Title"/>
+                <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('name')}"
+                   th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"/>
+            </div>
+
+            <div th:if="${plan.getExercises().isEmpty()}">
+                <p>Get started by adding an exercise to your plan!</p>
+            </div>
+
+            <ul class="list-group" th:if="${!plan.getExercises().isEmpty()}">
+                <li class="list-group-item" th:each="exercise : *{exercises}" th:if="${exercise.getExerciseType() != null}">
+                    <h6 th:text="${exercise.getExerciseInformation().getName()}"/>
+                    <table>
+                        <tr>
+                            <th>SET</th>
+                            <th>KG</th>
+                            <th>REPS</th>
+                        </tr>
+                        <tr th:each="set : ${exercise.getSets()}">
+                            <td th:text="${set.ordering}"/>
+                            <td th:text="${set.weight}"/>
+                            <td th:text="${set.reps}"/>
+                        </tr>
+                        <tr>
+                            <a class="btn btn-light" th:href="@{|/workout_plans/create/edit_exercise/${exercise.id}|}">Edit
+                                exercise</a>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <a class="btn btn-dark mt-3" th:href="@{|/workout_plans/create/add_exercise/|}">+ Add exercise</a>
+            <button class="btn btn-primary mt-3" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

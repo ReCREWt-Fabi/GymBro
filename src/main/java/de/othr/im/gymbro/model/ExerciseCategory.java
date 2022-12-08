@@ -5,8 +5,9 @@ public enum ExerciseCategory {
     BACK("Back"),
     LEGS("Legs"),
     SHOULDERS("Shoulders"),
-    ARMS("Arms"),
-    CORE("Core"),
+    BICEPS("Biceps"),
+    TRICEPS("Triceps"),
+    ABS("Abs"),
     CARDIO("Cardio"),
     OTHER("Other");
 

@@ -39,22 +39,22 @@ public class User {
     @Max(value = 5, message = "Height must be max. 5 min!")
     private int restTime;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<WorkoutPlan> plans = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
     private Schedule schedule;
 
-    @NotZeroEnum(message = "Please specify your gender")
-    private Gender gender;
+    // @NotZeroEnum(message = "Please specify your gender")
+    private Gender gender = Gender.UNSPECIFIED;
 
-    @NotZeroEnum(message = "Please tell us you main workout goal")
-    private WorkoutGoal workoutGoal;
+    // @NotZeroEnum(message = "Please tell us you main workout goal")
+    private WorkoutGoal workoutGoal = WorkoutGoal.UNSPECIFIED;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Past(message = "Birth date must be in the past!")
-    @NotNull(message = "Please specify a birth date!")
-    private LocalDate birthDate;
+    // @Past(message = "Birth date must be in the past!")
+    // @NotNull(message = "Please specify a birth date!")
+    private LocalDate birthDate = LocalDate.now();
 
     public Gender getGender() {
         return gender;
