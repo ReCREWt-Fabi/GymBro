@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Exercise</h1>
+        <form class="text-start" method="post" th:action="@{/workout_plans/create/edit_exercise/submit}"
+              th:object="${exercise}">
+
+            <div th:if="*{exerciseInformation == null}">
+                <a class="btn btn-dark mb-5 mt-3" th:href="@{/exercises}">Select exercise</a>
+            </div>
+
+            <ul class="list-group" th:if="*{exerciseInformation != null}">
+                <h5 class="mb-2" th:text="*{exerciseInformation.getName()}"/>
+                <li class="list-group-item" th:each="set : *{sets}">
+                    <table>
+                        <tr>
+                            <th>SET</th>
+                            <th>KG</th>
+                            <th>REPS</th>
+                        </tr>
+                        <tr th:each="set, itemStat : *{sets}">
+                            <td th:text="${set.ordering}"/>
+                            <td><input th:field="*{sets[__${itemStat.index}__].weight}"/></td>
+                            <td><input th:field="*{sets[__${itemStat.index}__].reps}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="btn btn-light" type="button">+ Add set</button>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <button class="btn btn-primary" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

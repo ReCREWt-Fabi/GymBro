@@ -5,8 +5,9 @@ public enum ExerciseCategory {
     BACK,
     LEGS,
     SHOULDERS,
-    ARMS,
-    CORE,
+    BICEPS,
+    TRICEPS,
+    ABS,
     CARDIO,
     OTHER
 }

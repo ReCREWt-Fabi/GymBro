@@ -4,6 +4,8 @@ import de.othr.im.gymbro.frmsbm.Workout;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,14 @@ public class Exercise {
     /**
      * Used to retrieve the exercise information from the ExerciseRepository.
      */
+    @NotNull
     private String exerciseType;
+
+    /**
+     * Automatically populated upon deserialization.
+     */
+    @Transient
+    private ExerciseInformation exerciseInformation;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.MERGE)
     private List<ExerciseSet> sets = new ArrayList<>();
@@ -69,5 +78,13 @@ public class Exercise {
 
     public void setCompletedSets(List<CompletedSet> completedSets) {
         this.completedSets = completedSets;
+    }
+
+    public ExerciseInformation getExerciseInformation() {
+        return exerciseInformation;
+    }
+
+    public void setExerciseInformation(ExerciseInformation exerciseInformation) {
+        this.exerciseInformation = exerciseInformation;
     }
 }

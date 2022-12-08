@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Your Workout Plans</h1>
+
+        <div th:if="${plans.isEmpty()}">
+            <p>You have no workout plans yet. Create one now!</p>
+        </div>
+
+        <ul class="list-group" th:if="${!plans.isEmpty()}">
+            <li class="list-group-item" th:each="plan : ${plans}">
+                <h6 th:text="${plan.getName()}" />
+                <p th:text="${plan.getExerciseNamesAsString()}"/>
+            </li>
+        </ul>
+
+        <a class="btn btn-primary" href="/workout_plans/create">Create new plan</a>
+    </div>
+</div>
+</body>
+</html>
