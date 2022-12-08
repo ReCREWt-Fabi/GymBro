@@ -50,6 +50,7 @@ public class User {
     private Gender gender;
 
     private WorkoutGoal workoutGoal;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 

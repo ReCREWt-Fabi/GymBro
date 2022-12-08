@@ -22,10 +22,7 @@ public class UserProfileService {
             mv.setViewName("user-profile/edit-user-profile");
             return mv;
         }
-
         userRepository.save(user);
-
-
         mv.setViewName("redirect:/user_profile");
         return mv;
     }

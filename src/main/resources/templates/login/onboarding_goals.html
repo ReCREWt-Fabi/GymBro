@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/base-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-2">About You</h1>
+        <p class="pb-4">Specify your workout goals here! With that we can focus your training on your main goal!</p>
+        <form class="text-start" method="post" th:action="@{/onboarding/goals/submit}" th:object="${userData}">
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="workoutGoal">Workout Goal</label>
+                <select class="form-control" id="workoutGoal" th:field="*{workoutGoal}">
+                    <option th:each="workoutGoal : ${T(de.othr.im.gymbro.model.WorkoutGoal).values()}"
+                            th:text="${workoutGoal.label}" th:value="${workoutGoal}"></option>
+                </select>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('workoutGoal')}"
+                   th:text="${#strings.listJoin(#fields.errors('workoutGoal'), ', ')}"/>
+            </div>
+
+            <div class="form-group pb-3">
+                <label class="pb-2" for="restTime">Rest Time (in min)</label>
+                <input class="form-control" id="restTime" th:field="*{restTime}" type="number"/>
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('restTime')}"
+                   th:text="${#strings.listJoin(#fields.errors('restTime'), ', ')}"/>
+            </div>
+
+            <a class="btn btn-primary" href="/onboarding/finished">Next</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
