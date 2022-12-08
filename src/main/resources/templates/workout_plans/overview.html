@@ -17,13 +17,21 @@
         </div>
 
         <ul class="list-group" th:if="${!plans.isEmpty()}">
-            <li class="list-group-item" th:each="plan : ${plans}">
-                <h6 th:text="${plan.getName()}" />
-                <p th:text="${plan.getExerciseNamesAsString()}"/>
+            <li class="list-group-item pb-1" th:each="plan : ${plans}">
+                <form class="container-fluid p-2 m-0" method="post"
+                      th:action="@{/workout_plans/delete(planId=${plan.getId()})}">
+                    <div class="text-center">
+                        <h6 class="d-inline" th:text="${plan.name}"/>
+                        <button type="submit" class="btn btn-light d-inline float-end">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        <p th:text="${service.getExerciseNamesOfPlanAsString(plan)}"/>
+                    </div>
+                </form>
             </li>
         </ul>
 
-        <a class="btn btn-primary" href="/workout_plans/create">Create new plan</a>
+        <a class="btn btn-primary mt-3" href="/workout_plans/create">Create new plan</a>
     </div>
 </div>
 </body>

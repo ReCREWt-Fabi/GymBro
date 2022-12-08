@@ -1,13 +1,13 @@
 package de.othr.im.gymbro.model;
 
-import de.othr.im.gymbro.util.validation.NotZeroEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -38,12 +38,6 @@ public class User {
     @Min(value = 0, message = "Height must be positive!")
     @Max(value = 5, message = "Height must be max. 5 min!")
     private int restTime;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<WorkoutPlan> plans = new ArrayList<>();
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
-    private Schedule schedule;
 
     // @NotZeroEnum(message = "Please specify your gender")
     private Gender gender = Gender.UNSPECIFIED;
@@ -80,14 +74,6 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
     public Long getId() {
         return id;
     }
@@ -119,15 +105,6 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
-    public List<WorkoutPlan> getPlans() {
-        return plans;
-    }
-
-    public void setPlans(List<WorkoutPlan> plans) {
-        this.plans = plans;
-    }
-
 
     public int getHeight() {
         return height;

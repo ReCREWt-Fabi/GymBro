@@ -1,14 +1,9 @@
 package de.othr.im.gymbro.config;
 
-import de.othr.im.gymbro.repository.UserRepository;
 import de.othr.im.gymbro.service.GymBroUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -24,11 +19,11 @@ public class SecurityConfiguration {
     GymBroUserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http, final AutoPopulateExerciseInformationHandler handler) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/unauthenticated/**", "/error/**").permitAll()
                 .anyRequest().authenticated()
-                .and().csrf().disable().formLogin().loginPage("/unauthenticated/login").defaultSuccessUrl("/home").successHandler(handler)
+                .and().csrf().disable().formLogin().loginPage("/unauthenticated/login").defaultSuccessUrl("/home")
                 .and().logout().logoutUrl("/unauthenticated/logout").logoutSuccessUrl("/unauthenticated/login?logout").invalidateHttpSession(true).clearAuthentication(true)
                 .permitAll();
         return http.build();

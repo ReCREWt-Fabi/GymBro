@@ -11,20 +11,24 @@
 <div layout:fragment="content">
     <div style="width: 60%">
         <h1 class="pb-4">Your Workout Plan</h1>
-        <form class="text-start" method="post" th:action="@{/workout_plans/create/submit}" th:object="${plan}">
+        <form class="text-start" method="post" th:action="@{/workout_plans/create/submit(planId=${plan.getId()})}"
+              th:object="${plan}">
 
             <div class="form-group pb-3">
-                <input class="form-control" id="name" th:field="*{name}" type="text" placeholder="Workout Plan Title"/>
+                <input class="form-control" id="name" th:if="${!isInitialized}" th:field="*{name}" type="text"
+                       placeholder="Workout Plan Title"/>
+                <h5 th:if="${isInitialized}" th:text="*{name}"/>
                 <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('name')}"
                    th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"/>
             </div>
 
-            <div th:if="${plan.getExercises().isEmpty()}">
+            <div th:if="${isInitialized && exercises.isEmpty()}">
                 <p>Get started by adding an exercise to your plan!</p>
             </div>
 
-            <ul class="list-group" th:if="${!plan.getExercises().isEmpty()}">
-                <li class="list-group-item" th:each="exercise : *{exercises}" th:if="${exercise.getExerciseType() != null}">
+            <ul class="list-group" th:if="${isInitialized && !exercises.isEmpty()}">
+                <li class="list-group-item" th:each="exercise : ${exercises}"
+                    th:if="${exercise.getExerciseType() != null}">
                     <h6 th:text="${exercise.getExerciseInformation().getName()}"/>
                     <table>
                         <tr>
@@ -32,7 +36,7 @@
                             <th>KG</th>
                             <th>REPS</th>
                         </tr>
-                        <tr th:each="set : ${exercise.getSets()}">
+                        <tr th:each="set : ${service.getSets(exercise)}">
                             <td th:text="${set.ordering}"/>
                             <td th:text="${set.weight}"/>
                             <td th:text="${set.reps}"/>
@@ -44,8 +48,9 @@
                     </table>
                 </li>
             </ul>
-            <a class="btn btn-dark mt-3" th:href="@{|/workout_plans/create/add_exercise/|}">+ Add exercise</a>
-            <button class="btn btn-primary mt-3" type="submit">Save</button>
+            <a class="btn btn-dark mt-3" th:if="${isInitialized}" th:href="@{|/workout_plans/create/add_exercise/|}">+
+                Add exercise</a>
+            <button th:if="${!isInitialized}" class="btn btn-primary mt-3" type="submit">Create</button>
         </form>
     </div>
 </div>
