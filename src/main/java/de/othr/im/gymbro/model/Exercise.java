@@ -30,12 +30,6 @@ public class Exercise {
     @Transient
     private ExerciseInformation exerciseInformation;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.MERGE)
-    private List<ExerciseSet> sets = new ArrayList<>();
-
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.MERGE)
-    private List<CompletedSet> completedSets = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "idplan")
     private WorkoutPlan plan;
@@ -56,28 +50,12 @@ public class Exercise {
         this.exerciseType = exerciseType;
     }
 
-    public List<ExerciseSet> getSets() {
-        return sets;
-    }
-
-    public void setSets(List<ExerciseSet> sets) {
-        this.sets = sets;
-    }
-
     public WorkoutPlan getPlan() {
         return plan;
     }
 
     public void setPlan(WorkoutPlan plan) {
         this.plan = plan;
-    }
-
-    public List<CompletedSet> getCompletedSets() {
-        return completedSets;
-    }
-
-    public void setCompletedSets(List<CompletedSet> completedSets) {
-        this.completedSets = completedSets;
     }
 
     public ExerciseInformation getExerciseInformation() {

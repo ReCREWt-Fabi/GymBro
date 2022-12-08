@@ -2,14 +2,12 @@ package de.othr.im.gymbro.service;
 
 import de.othr.im.gymbro.model.Exercise;
 import de.othr.im.gymbro.model.User;
+import de.othr.im.gymbro.model.WorkoutPlan;
 import de.othr.im.gymbro.repository.ExerciseRepository;
-import de.othr.im.gymbro.repository.UserRepository;
+import de.othr.im.gymbro.repository.WorkoutPlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
@@ -17,10 +15,12 @@ import java.util.Optional;
 public class WorkoutPlanService {
 
     private final ExerciseRepository exerciseRepository;
+    private final WorkoutPlanRepository workoutPlanRepository;
 
     @Autowired
-    public WorkoutPlanService(final ExerciseRepository exerciseRepository) {
+    public WorkoutPlanService(final ExerciseRepository exerciseRepository, final WorkoutPlanRepository workoutPlanRepository) {
         this.exerciseRepository = exerciseRepository;
+        this.workoutPlanRepository = workoutPlanRepository;
     }
 
 
@@ -29,14 +29,11 @@ public class WorkoutPlanService {
         return Optional.ofNullable(res);
     }
 
-    public ModelAndView saveExercise(final Exercise formResult, final BindingResult result, final String targetView) {
-        final ModelAndView mv = new ModelAndView();
-        if (result.hasErrors()) {
-            mv.setViewName("workout_plans/edit_exercise");
-            return mv;
-        }
-        exerciseRepository.save(formResult);
-        mv.setViewName("redirect:" +  targetView);
-        return mv;
+    public WorkoutPlan createPlan() {
+        return workoutPlanRepository.save(new WorkoutPlan());
+    }
+
+    public Optional<WorkoutPlan> getPlan(final Long planId) {
+        return workoutPlanRepository.findById(planId);
     }
 }
