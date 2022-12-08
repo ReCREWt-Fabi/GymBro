@@ -1,12 +1,10 @@
 package de.othr.im.gymbro.model;
 
+import de.othr.im.gymbro.util.validation.NotZeroEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +45,15 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
     private Schedule schedule;
 
+    @NotZeroEnum(message = "Please specify your gender")
     private Gender gender;
 
+    @NotZeroEnum(message = "Please tell us you main workout goal")
     private WorkoutGoal workoutGoal;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Birth date must be in the past!")
+    @NotNull(message = "Please specify a birth date!")
     private LocalDate birthDate;
 
     public Gender getGender() {

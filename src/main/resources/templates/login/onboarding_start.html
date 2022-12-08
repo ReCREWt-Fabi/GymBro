@@ -6,11 +6,19 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div style="width: 60%" align="left"></div>
+    <div style="width: 60%">
+
+        <h1 class="pb-4">Welcome to GymBro!</h1>
+        <p class="pb-2">Before we start, we would like to get to know you better!</p>
+        <p class="pb-2">Please click "Next" to get PUMPING!</p>
+        <a class="btn btn-primary" href="/onboarding/about">Next</a>
+
+    </div>
 </div>
 </body>
 </html>

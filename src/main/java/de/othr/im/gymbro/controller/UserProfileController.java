@@ -50,8 +50,11 @@ public class UserProfileController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/edit/submit")
-    public ModelAndView updateUser(@Valid @ModelAttribute("userForm") final User user, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
-        userDetails.setUser(user);
-        return userProfileService.updateUser(user, bindingResult);
+    public ModelAndView updateUser(@Valid @ModelAttribute("userForm") final User formResult, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
+        User currentUser = userDetails.getUser();
+        formResult.setId(currentUser.getId());
+        formResult.setPassword(currentUser.getPassword());
+        userDetails.setUser(formResult);
+        return userProfileService.updateUser(formResult, bindingResult);
     }
 }

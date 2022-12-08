@@ -12,8 +12,6 @@
     <div style="width: 60%">
         <h1 class="pb-4">Edit User Profile</h1>
         <form class="text-start" method="post" th:action="@{/user_profile/edit/submit}" th:object="${userForm}">
-            <input hidden id="id" th:field="*{id}"/>
-            <input hidden id="password" th:field="*{password}"/>
 
             <div class="form-group pb-3">
                 <label class="pb-2" for="name">Name</label>
