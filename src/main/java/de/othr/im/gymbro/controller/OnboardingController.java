@@ -49,9 +49,14 @@ public class OnboardingController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/about/submit")
-    public ModelAndView updateUserGeneralData(@Valid @ModelAttribute("userData") final User user, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
-        userDetails.setUser(user);
-        return onboardingService.updateUser(user, "login/onboarding_user", "current", bindingResult);
+    public ModelAndView updateUserGeneralData(@Valid @ModelAttribute("userData") final User formResult, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
+        final User currentUser = userDetails.getUser();
+        currentUser.setBirthDate(formResult.getBirthDate());
+        currentUser.setGender(formResult.getGender());
+        if (bindingResult.hasFieldErrors("birthDate") || bindingResult.hasFieldErrors("gender")) {
+            return new ModelAndView("login/onboarding_user");
+        }
+        return onboardingService.updateUser(currentUser, "current");
     }
 
     @RequestMapping("/current")
@@ -61,9 +66,14 @@ public class OnboardingController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/current/submit")
-    public ModelAndView updateUserCurrentMeasures(@Valid @ModelAttribute("userData") final User user, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
-        userDetails.setUser(user);
-        return onboardingService.updateUser(user, "login/onboarding_current", "goals", bindingResult);
+    public ModelAndView updateUserCurrentMeasures(@Valid @ModelAttribute("userData") final User formResult, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
+        final User currentUser = userDetails.getUser();
+        currentUser.setHeight(formResult.getHeight());
+        currentUser.setWeight(formResult.getWeight());
+        if (bindingResult.hasFieldErrors("height") || bindingResult.hasFieldErrors("weight")) {
+            return new ModelAndView("login/onboarding_current");
+        }
+        return onboardingService.updateUser(currentUser, "goals");
     }
 
     @RequestMapping("/goals")
@@ -73,9 +83,14 @@ public class OnboardingController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/goals/submit")
-    public ModelAndView updateUserGoals(@Valid @ModelAttribute("userData") final User user, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
-        userDetails.setUser(user);
-        return onboardingService.updateUser(user, "login/onboarding_goals", "finished", bindingResult);
+    public ModelAndView updateUserGoals(@Valid @ModelAttribute("userData") final User formResult, final BindingResult bindingResult, @AuthenticationPrincipal GymBroUserDetails userDetails) {
+        final User currentUser = userDetails.getUser();
+        currentUser.setWorkoutGoal(formResult.getWorkoutGoal());
+        currentUser.setRestTime(formResult.getRestTime());
+        if (bindingResult.hasFieldErrors("workoutGoal") || bindingResult.hasFieldErrors("restTime")) {
+            return new ModelAndView("login/onboarding_goals");
+        }
+        return onboardingService.updateUser(currentUser, "finished");
     }
 
     @RequestMapping("/finished")

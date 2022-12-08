@@ -17,12 +17,8 @@ public class OnboardingService {
         this.userRepository = userRepository;
     }
 
-    public ModelAndView updateUser(final User user, final String currentPage, final String nextPage, final BindingResult result) {
+    public ModelAndView updateUser(final User user, final String nextPage) {
         final ModelAndView mv = new ModelAndView();
-        if (result.hasErrors()) {
-            mv.setViewName(currentPage);
-            return mv;
-        }
         userRepository.save(user);
         mv.setViewName("redirect:/onboarding/" + nextPage);
         return mv;

@@ -30,7 +30,7 @@
                 <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('gender')}"
                    th:text="${#strings.listJoin(#fields.errors('gender'), ', ')}"/>
             </div>
-            <a class="btn btn-primary" href="/onboarding/current">Next</a>
+            <button class="btn btn-primary" type="submit">Next</button>
         </form>
     </div>
 </div>
