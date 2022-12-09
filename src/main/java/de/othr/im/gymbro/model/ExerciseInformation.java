@@ -1,24 +1,29 @@
 package de.othr.im.gymbro.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ExerciseInformation {
 
     private String name;
     private String description;
     private String videoUrl;
-    private List<ExerciseCategory> categories = new ArrayList<>();
+    private ExerciseCategory category;
 
     public ExerciseInformation() {
     }
 
-    public ExerciseInformation(String name, String description, String videoUrl, List<ExerciseCategory> categories) {
+    public ExerciseInformation(String name, String description, String videoUrl, ExerciseCategory category) {
         this.name = name;
         this.description = description;
         this.videoUrl = videoUrl;
-        this.categories = categories;
+        this.category = category;
+    }
+
+    public static ExerciseInformation createFromApi(ExerciseInformationFromApi exerciseInformationFromApi) {
+        ExerciseInformation exerciseInformation = new ExerciseInformation();
+        exerciseInformation.setName(exerciseInformationFromApi.getName());
+        exerciseInformation.setDescription("Equipment: %s - Body Part: %s".formatted(exerciseInformationFromApi.getEquipment(), exerciseInformationFromApi.getBodyPart()));
+        exerciseInformation.setVideoUrl(exerciseInformationFromApi.getGifUrl());
+        exerciseInformation.setCategory(ExerciseCategory.getCategoryFromApi(exerciseInformationFromApi.getTarget()));
+        return exerciseInformation;
     }
 
     public String getName() {
@@ -45,12 +50,11 @@ public class ExerciseInformation {
         this.videoUrl = videoUrl;
     }
 
-    public List<ExerciseCategory> getCategories() {
-        return categories;
+    public ExerciseCategory getCategory() {
+        return category;
     }
 
-    public void setCategories(List<ExerciseCategory> categories) {
-        this.categories = categories;
+    public void setCategory(ExerciseCategory category) {
+        this.category = category;
     }
-
 }
