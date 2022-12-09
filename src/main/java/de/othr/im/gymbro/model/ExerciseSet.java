@@ -14,7 +14,6 @@ public class ExerciseSet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Positive
     private int ordering;
 
     @Positive
@@ -26,6 +25,16 @@ public class ExerciseSet {
     private Date completedAt;
 
     private String notes;
+
+    public ExerciseSet() {
+    }
+
+    public ExerciseSet(final int ordering, final int reps, final int weight, final Exercise exercise) {
+        this.ordering = ordering;
+        this.reps = reps;
+        this.weight = weight;
+        this.exercise = exercise;
+    }
 
     public static ExerciseSet createForExercise(Exercise exercise) {
         ExerciseSet set = new ExerciseSet();
@@ -39,15 +48,6 @@ public class ExerciseSet {
 
     public void setCompletedAt(Date completedAt) {
         this.completedAt = completedAt;
-    }
-
-    public ExerciseSet(){}
-
-    public ExerciseSet(final int ordering, final int reps, final int weight, final Exercise exercise) {
-        this.ordering = ordering;
-        this.reps = reps;
-        this.weight = weight;
-        this.exercise = exercise;
     }
 
     public Exercise getExercise() {

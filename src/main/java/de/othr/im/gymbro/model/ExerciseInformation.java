@@ -20,9 +20,9 @@ public class ExerciseInformation {
     public static ExerciseInformation createFromApi(ExerciseInformationFromApi exerciseInformationFromApi) {
         ExerciseInformation exerciseInformation = new ExerciseInformation();
         exerciseInformation.setName(exerciseInformationFromApi.getName());
-        exerciseInformation.setDescription(exerciseInformationFromApi.getTarget());
+        exerciseInformation.setDescription("Equipment: %s - Body Part: %s".formatted(exerciseInformationFromApi.getEquipment(), exerciseInformationFromApi.getBodyPart()));
         exerciseInformation.setVideoUrl(exerciseInformationFromApi.getGifUrl());
-        exerciseInformation.setCategory(ExerciseCategory.getCategoryFromApi(exerciseInformationFromApi.getBodyPart()));
+        exerciseInformation.setCategory(ExerciseCategory.getCategoryFromApi(exerciseInformationFromApi.getTarget()));
         return exerciseInformation;
     }
 

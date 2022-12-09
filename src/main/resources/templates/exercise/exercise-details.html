@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{fragments/logged-in-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>GymBro - Exercise Details</title>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
@@ -10,44 +11,57 @@
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4">Exercise Details - <span th:text="${exerciseInformation.name}"/></h1>
-        <div class="text-start">
-            <p class="pb-1">
-                <span class="fw-bold">Description: </span>
-                <span th:text="${exerciseInformation.description != null} ? ${exerciseInformation.description} : 'Not specified'"/>
-            </p>
-            <div class="pb-3">
-                <span class="fw-bold">Categories: </span>
-                <span th:text="${#strings.listJoin(exerciseInformation.categories.![label], ', ')}"/>
+        <h1 class="pb-4">Exercise Details - <span th:if="${exercise.exerciseInformation != null}"
+                                                  th:text="${exercise.exerciseInformation.name}"/></h1>
+        <div th:if="${exercise.exerciseInformation != null}">
+            <div class="text-start">
+                <p class="pb-1">
+                    <span class="fw-bold">Description: </span>
+                    <span th:text="${exercise.exerciseInformation.description != null} ? ${exercise.exerciseInformation.description} : 'Not specified'"/>
+                </p>
+                <div class="pb-3">
+                    <span class="fw-bold">Categories: </span>
+                    <span th:text="${#strings.listJoin(exercise.exerciseInformation.categories.![label], ', ')}"/>
+                </div>
             </div>
-            <h4 class="pb-2">Sets</h4>
-            <ul class="list-group mb-3">
-                <li class="list-group-item" th:each="set : ${sets}">
-                    <div class="p-2">
-                        <p class="py-1">
-                            <span class="fw-bold">Reps: </span>
-                            <span th:text="${set.reps != 0} ? ${set.reps} : 'Not specified'"/>
-                        </p>
-                        <p class="pb-1">
-                            <span class="fw-bold">Weight (in kg): </span>
-                            <span th:text="${set.weight != 0} ? ${set.weight} : '-'"/>
-                        </p>
-
-                        <p class="pb-1">
-                            <span class="fw-bold">Completed At: </span>
-                            <span th:text="${set.completedAt != null} ? ${#dates.format(set.completedAt, 'dd.MM.yyyy')} : 'Not completed'"/>
-                        </p>
-
-                        <p>
-                            <span class="fw-bold">Notes: </span>
-                            <span th:text="${set.notes != null} ? ${set.notes} : '-'"/>
-                        </p>
-                    </div>
-                </li>
-            </ul>
         </div>
-        <a class="btn btn-primary" th:href="@{/exercise_details/{id}/track_set(id=${exercise.id})}">Track set</a>
+        <h4 class="pb-2">Sets</h4>
+        <ul class="list-group mb-3">
+            <li class="list-group-item" th:each="set : ${sets}">
+                <div class="p-2">
+                    <p class="py-1">
+                        <span class="fw-bold">Reps: </span>
+                        <span th:text="${set.reps != 0} ? ${set.reps} : 'Not specified'"/>
+                    </p>
+                    <p class="pb-1">
+                        <span class="fw-bold">Weight (in kg): </span>
+                        <span th:text="${set.weight != 0} ? ${set.weight} : '-'"/>
+                    </p>
+
+                    <p class="pb-1">
+                        <span class="fw-bold">Completed At: </span>
+                        <span th:text="${set.completedAt != null} ? ${#dates.format(set.completedAt, 'dd.MM.yyyy')} : 'Not completed'"/>
+                    </p>
+
+                    <p>
+                        <span class="fw-bold">Notes: </span>
+                        <span th:text="${set.notes != null} ? ${set.notes} : '-'"/>
+                    </p>
+                    <div>
+                        <a class="btn btn-primary"
+                           th:href="@{/exercise_details/{id}/track_set(id=${exercise.id}, setId=${set.id})}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger"
+                           th:href="@{/exercise_details/{id}/delete_set/{sid}(id=${exercise.id},sid=${set.id})}">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
+    <a class="btn btn-primary" th:href="@{/exercise_details/{id}/track_set(id=${exercise.id})}">Track set</a>
 </div>
 </body>
 </html>

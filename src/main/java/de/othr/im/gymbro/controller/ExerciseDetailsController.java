@@ -1,11 +1,10 @@
 package de.othr.im.gymbro.controller;
 
 import de.othr.im.gymbro.model.Exercise;
-import de.othr.im.gymbro.model.ExerciseInformation;
 import de.othr.im.gymbro.model.ExerciseSet;
+import de.othr.im.gymbro.repository.ExerciseInformationRepository;
 import de.othr.im.gymbro.repository.ExerciseRepository;
 import de.othr.im.gymbro.repository.ExerciseSetRepository;
-import de.othr.im.gymbro.service.ExerciseInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -27,13 +26,13 @@ public class ExerciseDetailsController {
 
     private final ExerciseRepository exerciseRepository;
     private final ExerciseSetRepository exerciseSetRepository;
-    private final ExerciseInformationService exerciseInformationService;
+    private final ExerciseInformationRepository exerciseInformationRepository;
 
     @Autowired
-    public ExerciseDetailsController(ExerciseRepository exerciseRepository, ExerciseSetRepository exerciseSetRepository, ExerciseInformationService exerciseInformationService) {
+    public ExerciseDetailsController(ExerciseRepository exerciseRepository, ExerciseSetRepository exerciseSetRepository, ExerciseInformationRepository exerciseInformationRepository) {
         this.exerciseRepository = exerciseRepository;
         this.exerciseSetRepository = exerciseSetRepository;
-        this.exerciseInformationService = exerciseInformationService;
+        this.exerciseInformationRepository = exerciseInformationRepository;
     }
 
     @InitBinder
@@ -45,12 +44,11 @@ public class ExerciseDetailsController {
     @RequestMapping({"/{id}"})
     public String showExerciseDetails(@PathVariable("id") Long id, Model model) {
         Optional<Exercise> exercise = exerciseRepository.findById(id);
+
         if (exercise.isPresent()) {
             List<ExerciseSet> sets = exerciseSetRepository.findSetsByExercise(id);
-            ExerciseInformation exerciseInformation = exerciseInformationService.getExerciseInformation(exercise.get().getExerciseType());
             model.addAttribute("exercise", exercise.get());
             model.addAttribute("sets", sets);
-            model.addAttribute("exerciseInformation", exerciseInformation);
         } else {
             model.addAttribute("errors", "Exercise not found!");
         }
@@ -64,17 +62,21 @@ public class ExerciseDetailsController {
         Optional<Exercise> exercise = exerciseRepository.findById(exerciseId);
         if (exercise.isPresent()) {
             Optional<ExerciseSet> set = setId != null ? exerciseSetRepository.findById(setId) : Optional.empty();
-            ExerciseInformation exerciseInformation = exerciseInformationService.getExerciseInformation(exercise.get().getExerciseType());
             model.addAttribute("set", set.orElseGet(() -> ExerciseSet.createForExercise(exercise.get())));
             model.addAttribute("exercise", exercise.get());
-            model.addAttribute("exerciseInformation", exerciseInformation);
         } else {
             model.addAttribute("errors", "Exercise not found!");
         }
 
-
         return "exercise/track-set";
     }
+
+    @RequestMapping({"/{id}/delete_set/{sid}"})
+    public String deleteSet(@PathVariable("id") Long exerciseId, @PathVariable("sid") Long setId) {
+        exerciseSetRepository.deleteById(setId);
+        return "redirect:/exercise_details/" + exerciseId;
+    }
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/{id}/track_set/submit")
     public ModelAndView updateUser(@PathVariable("id") Long exerciseId, @Valid @ModelAttribute("set") final ExerciseSet set, final BindingResult bindingResult) {
@@ -89,7 +91,7 @@ public class ExerciseDetailsController {
         }
         set.setCompletedAt(new Date());
         exerciseSetRepository.save(set);
-        mv.setViewName(String.format("redirect:/exercise_details/%s", exerciseId));
+        mv.setViewName("redirect:/exercise_details/" + exerciseId);
         return mv;
     }
 }

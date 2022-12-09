@@ -3,6 +3,7 @@ package de.othr.im.gymbro.repository;
 import de.othr.im.gymbro.model.ExerciseCategory;
 import de.othr.im.gymbro.model.ExerciseInformation;
 import de.othr.im.gymbro.model.ExerciseInformationFromApi;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -15,7 +16,7 @@ public class ExerciseInformationRepositoryImpl implements ExerciseInformationRep
 
     @Override
     public List<ExerciseInformation> findAll() {
-        String uri = "/";
+        String uri = "";
         return getExercises(uri);
     }
 
@@ -47,17 +48,19 @@ public class ExerciseInformationRepositoryImpl implements ExerciseInformationRep
         if (exercises == null) {
             return Collections.emptyList();
         }
-
+        
         return Arrays.stream(exercises).map(ExerciseInformation::createFromApi).toList();
     }
 
     private WebClient prepareClient() {
         String uri = "https://exercisedb.p.rapidapi.com/exercises";
 
-        return WebClient.builder().baseUrl(uri).defaultHeaders(headers -> {
-            headers.set("X-RapidAPI-Key", "514266226dmsh07fca84de2fcd5cp1f3ff2jsn62b9edc1ee71");
-            headers.set("X-RapidAPI-Key-Host", "exercisedb.p.rapidapi.com");
-        }).build();
+        return WebClient.builder()
+                .baseUrl(uri).defaultHeaders(headers -> {
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    headers.set("X-RapidAPI-Key", "514266226dmsh07fca84de2fcd5cp1f3ff2jsn62b9edc1ee71");
+                    headers.set("X-RapidAPI-Host", "exercisedb.p.rapidapi.com");
+                }).build();
     }
 
 }
