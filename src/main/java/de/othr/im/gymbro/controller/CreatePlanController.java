@@ -48,8 +48,8 @@ public class CreatePlanController {
     }
 
     @RequestMapping("/add_exercise")
-    public String showExerciseSelector(final Model model) {
-        return "redirect:/exercises";
+    public String showExerciseSelector(final @RequestParam(required = false) Long planId) {
+        return "redirect:/exercises?planId=" + planId;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/submit")

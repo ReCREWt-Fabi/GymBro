@@ -10,10 +10,19 @@
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4">Select exercise</h1>
-        <form class="text-start" method="post" th:action="@{/workout_plans/create/edit_exercise/submit}" th:object="${exercise}">
-            <button class="btn btn-primary" type="submit">Save</button>
-        </form>
+        <h1 class="pb-4" th:if="${planId} != null">Select Exercise</h1>
+        <h1 class="pb-4" th:if="${planId} == null">Exercise Catalogue</h1>
+        <div class="list-group text-start">
+            <div class="list-group-item" th:each="exercise: ${exercises}">
+                <h4 class="list-group-item-heading" th:text="${exercise.name}"/>
+                <div class="list-group-item-text">
+                    <p><span class="fw-bold">Target: </span><span th:text="${exercise.category.label}"/></p>
+                    <p><span class="fw-bold">Description: </span><span th:text="${exercise.description}"/></p>
+                </div>
+                <a class="btn btn-primary" th:href="@{/exercises/{id}/submit(id=${exercise.id}, planId=${planId})}"
+                   th:if="${planId} != null">Select</a>
+            </div>
+        </div>
     </div>
 </div>
 </body>

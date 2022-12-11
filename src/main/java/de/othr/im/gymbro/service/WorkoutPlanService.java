@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class WorkoutPlanService {
 
-    private final ExerciseInformationService exerciseInformationService;
+    private final ExerciseService exerciseService;
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseSetRepository exerciseSetRepository;
 
     @Autowired
-    public WorkoutPlanService(final ExerciseInformationService exerciseInformationService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository) {
-        this.exerciseInformationService = exerciseInformationService;
+    public WorkoutPlanService(final ExerciseService exerciseService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository) {
+        this.exerciseService = exerciseService;
         this.workoutPlanRepository = workoutPlanRepository;
         this.exerciseSetRepository = exerciseSetRepository;
     }
@@ -37,7 +37,7 @@ public class WorkoutPlanService {
     }
 
     public List<Exercise> getExercises(final WorkoutPlan plan) {
-        return exerciseInformationService.getExercises(plan);
+        return exerciseService.getExercisesForPlan(plan);
     }
 
     public List<WorkoutPlan> getPlans(final User user) {
@@ -45,7 +45,7 @@ public class WorkoutPlanService {
     }
 
     public List<String> getExerciseNamesOfPlan(final WorkoutPlan plan) {
-        final List<Exercise> exercises = exerciseInformationService.getExercises(plan);
+        final List<Exercise> exercises = exerciseService.getExercisesForPlan(plan);
         return exercises.stream().map(exercise -> exercise.getExerciseInformation().getName()).collect(Collectors.toList());
     }
 

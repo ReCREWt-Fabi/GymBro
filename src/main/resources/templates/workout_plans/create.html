@@ -15,8 +15,9 @@
               th:object="${plan}">
 
             <div class="form-group pb-3">
-                <input class="form-control" id="name" th:if="${!isInitialized}" th:field="*{name}" type="text"
-                       placeholder="Workout Plan Title"/>
+                <input class="form-control" id="name" placeholder="Workout Plan Title" th:field="*{name}"
+                       th:if="${!isInitialized}"
+                       type="text"/>
                 <h5 th:if="${isInitialized}" th:text="*{name}"/>
                 <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('name')}"
                    th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"/>
@@ -48,9 +49,10 @@
                     </table>
                 </li>
             </ul>
-            <a class="btn btn-dark mt-3" th:if="${isInitialized}" th:href="@{|/workout_plans/create/add_exercise/|}">+
+            <a class="btn btn-dark mt-3" th:href="@{/workout_plans/create/add_exercise/(planId=${plan.id})}"
+               th:if="${isInitialized}">+
                 Add exercise</a>
-            <button th:if="${!isInitialized}" class="btn btn-primary mt-3" type="submit">Create</button>
+            <button class="btn btn-primary mt-3" th:if="${!isInitialized}" type="submit">Create</button>
         </form>
     </div>
 </div>

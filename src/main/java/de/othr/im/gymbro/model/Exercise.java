@@ -54,6 +54,7 @@ public class Exercise {
     }
 
     public void setExerciseInformation(ExerciseInformation exerciseInformation) {
+        this.exerciseType = exerciseInformation.getId();
         this.exerciseInformation = exerciseInformation;
     }
 }

@@ -2,9 +2,8 @@ package de.othr.im.gymbro.controller;
 
 import de.othr.im.gymbro.model.Exercise;
 import de.othr.im.gymbro.model.ExerciseSet;
-import de.othr.im.gymbro.repository.ExerciseInformationRepository;
-import de.othr.im.gymbro.repository.ExerciseRepository;
 import de.othr.im.gymbro.repository.ExerciseSetRepository;
+import de.othr.im.gymbro.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -23,16 +22,13 @@ import java.util.Optional;
 @Controller
 @RequestMapping(value = {"/exercise_details"})
 public class ExerciseDetailsController {
-
-    private final ExerciseRepository exerciseRepository;
+    private final ExerciseService exerciseService;
     private final ExerciseSetRepository exerciseSetRepository;
-    private final ExerciseInformationRepository exerciseInformationRepository;
 
     @Autowired
-    public ExerciseDetailsController(ExerciseRepository exerciseRepository, ExerciseSetRepository exerciseSetRepository, ExerciseInformationRepository exerciseInformationRepository) {
-        this.exerciseRepository = exerciseRepository;
+    public ExerciseDetailsController(ExerciseService exerciseService, ExerciseSetRepository exerciseSetRepository) {
+        this.exerciseService = exerciseService;
         this.exerciseSetRepository = exerciseSetRepository;
-        this.exerciseInformationRepository = exerciseInformationRepository;
     }
 
     @InitBinder
@@ -43,11 +39,11 @@ public class ExerciseDetailsController {
 
     @RequestMapping({"/{id}"})
     public String showExerciseDetails(@PathVariable("id") Long id, Model model) {
-        Optional<Exercise> exercise = exerciseRepository.findById(id);
+        Exercise exercise = exerciseService.getExercise(id);
 
-        if (exercise.isPresent()) {
+        if (exercise != null) {
             List<ExerciseSet> sets = exerciseSetRepository.findSetsByExercise(id);
-            model.addAttribute("exercise", exercise.get());
+            model.addAttribute("exercise", exercise);
             model.addAttribute("sets", sets);
         } else {
             model.addAttribute("errors", "Exercise not found!");
@@ -59,11 +55,11 @@ public class ExerciseDetailsController {
 
     @RequestMapping({"/{id}/track_set"})
     public String showTrackSet(@PathVariable("id") Long exerciseId, @RequestParam(required = false) Long setId, Model model) {
-        Optional<Exercise> exercise = exerciseRepository.findById(exerciseId);
-        if (exercise.isPresent()) {
+        Exercise exercise = exerciseService.getExercise(exerciseId);
+        if (exercise != null) {
             Optional<ExerciseSet> set = setId != null ? exerciseSetRepository.findById(setId) : Optional.empty();
-            model.addAttribute("set", set.orElseGet(() -> ExerciseSet.createForExercise(exercise.get())));
-            model.addAttribute("exercise", exercise.get());
+            model.addAttribute("set", set.orElseGet(() -> ExerciseSet.createForExercise(exercise)));
+            model.addAttribute("exercise", exercise);
         } else {
             model.addAttribute("errors", "Exercise not found!");
         }
