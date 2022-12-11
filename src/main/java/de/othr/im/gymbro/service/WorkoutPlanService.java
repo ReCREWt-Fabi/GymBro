@@ -18,14 +18,16 @@ import java.util.stream.Collectors;
 public class WorkoutPlanService {
 
     private final ExerciseService exerciseService;
+    private final EmailService emailService;
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseSetRepository exerciseSetRepository;
 
     @Autowired
-    public WorkoutPlanService(final ExerciseService exerciseService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository) {
+    public WorkoutPlanService(final ExerciseService exerciseService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository, final EmailService emailService) {
         this.exerciseService = exerciseService;
         this.workoutPlanRepository = workoutPlanRepository;
         this.exerciseSetRepository = exerciseSetRepository;
+        this.emailService = emailService;
     }
 
     public List<ExerciseSet> getSets(final Exercise exercise) {
@@ -67,5 +69,13 @@ public class WorkoutPlanService {
 
     public void updatePlan(final WorkoutPlan updatedPlan) {
         workoutPlanRepository.save(updatedPlan);
+    }
+
+    public void sharePlan(Long id, String email) {
+        try {
+            emailService.sharePlan(email, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

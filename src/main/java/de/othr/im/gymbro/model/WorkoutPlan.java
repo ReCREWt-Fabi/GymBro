@@ -3,6 +3,7 @@ package de.othr.im.gymbro.model;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "workout_plan")
@@ -19,6 +20,13 @@ public class WorkoutPlan {
     @JoinColumn(name = "iduser", referencedColumnName = "id")
     @Valid
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "plan_follower",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "plan_id"))
+    private List<User> followers;
 
     public Long getId() {
         return id;
@@ -42,5 +50,13 @@ public class WorkoutPlan {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 }

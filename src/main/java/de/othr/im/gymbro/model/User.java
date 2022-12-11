@@ -8,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -38,6 +39,9 @@ public class User {
     @Min(value = 0, message = "Height must be positive!")
     @Max(value = 5, message = "Height must be max. 5 min!")
     private int restTime;
+
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
+    private List<WorkoutPlan> followedPlans;
 
     // @NotZeroEnum(message = "Please specify your gender")
     private Gender gender = Gender.UNSPECIFIED;
@@ -130,4 +134,11 @@ public class User {
         this.restTime = restTime;
     }
 
+    public List<WorkoutPlan> getFollowedPlans() {
+        return followedPlans;
+    }
+
+    public void setFollowedPlans(List<WorkoutPlan> followedPlans) {
+        this.followedPlans = followedPlans;
+    }
 }

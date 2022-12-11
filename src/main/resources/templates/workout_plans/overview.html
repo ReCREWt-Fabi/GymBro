@@ -22,9 +22,14 @@
                       th:action="@{/workout_plans/delete(planId=${plan.getId()})}">
                     <div class="text-center">
                         <h6 class="d-inline" th:text="${plan.name}"/>
-                        <button type="submit" class="btn btn-light d-inline float-end">
+                        <button class="btn btn-light d-inline float-end" type="submit">
                             <i class="fa fa-trash"></i>
                         </button>
+                        <a class="btn btn-light d-inline float-end"
+                           th:href="@{/workout_plans/{id}/share(id=${plan.id})}"
+                           type="button">
+                            <i class="fa fa-share"></i>
+                        </a>
                         <p th:text="${service.getExerciseNamesOfPlanAsString(plan)}"/>
                     </div>
                 </form>
