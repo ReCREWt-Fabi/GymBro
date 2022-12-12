@@ -8,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,8 +51,6 @@ public class User {
     private WorkoutGoal workoutGoal = WorkoutGoal.UNSPECIFIED;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    // @Past(message = "Birth date must be in the past!")
-    // @NotNull(message = "Please specify a birth date!")
     private LocalDate birthDate = LocalDate.now();
 
     public Gender getGender() {

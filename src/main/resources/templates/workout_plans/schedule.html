@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Your Schedule</h1>
+
+        <div class="text-center" th:if="${plans.isEmpty()}">
+            <p>You have no workout plans yet. Create one now!</p>
+            <a class="btn btn-primary mt-2" href="/workout_plans/create">Create new plan</a>
+        </div>
+
+        <ul class="list-group" th:if="${!plans.isEmpty()}">
+            <li class="list-group-item" th:each="plan : ${plans}"
+                th:href="@{/workout_plans/details(planId=${plan.getId()})}">
+                <div class="container-fluid p-2 m-0 text-center">
+                    <h6 class="d-inline" th:text="${plan.name}"/>
+                    <p th:text="${service.getExerciseNamesOfPlanAsString(plan)}"/>
+
+                    <div class="d-grid text-center gap-3">
+                        <div class="row mx-auto" style="column-gap: 16px; width: 60%">
+                            <div class="col" th:each="day: ${days}">
+                                <a class="col btn btn-light" th:if="${!plan.getDays().contains(day)}"
+                                   th:href="@{/schedule/day_selected(planId=${plan.getId()}, day=${day})}"
+                                   th:text="${day.getLabel()}"></a>
+                                <a class="btn btn-success" th:if="${plan.getDays().contains(day)}"
+                                   th:href="@{/schedule/day_deselected(planId=${plan.getId()}, day=${day})}"
+                                   th:text="${day.getLabel()}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="list-group mt-3">
+            <li class="list-group-item text-center p-4" th:if="${!schedule.isPaused() && !schedule.isPauseScheduled()}">
+                <h6>Put my workout on hold</h6>
+                <form class="text-start mx-auto" style="width: 60%;" method="post" th:action="@{/schedule/break}" th:object="${schedule}">
+                    <input hidden id="id" th:field="*{id}"/>
+                    <input hidden id="user" th:field="*{user}"/>
+
+                    <div class="form-group pb-3">
+                        <label class="pb-2" for="pauseFrom">From:</label>
+                        <input class="form-control" id="pauseFrom" th:field="*{pauseFrom}" type="date"/>
+                        <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('pauseFrom')}"
+                           th:text="${#strings.listJoin(#fields.errors('pauseFrom'), ', ')}"/>
+                    </div>
+                    <div class="form-group pb-3">
+                        <label class="pb-2" for="pauseTo">To:</label>
+                        <input class="form-control" id="pauseTo" th:field="*{pauseTo}" type="date"/>
+                        <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('pauseTo')}"
+                           th:text="${#strings.listJoin(#fields.errors('pauseTo'), ', ')}"/>
+                    </div>
+                    <button class="btn btn-dark" type="submit">
+                        Take a break
+                    </button>
+                </form>
+            </li>
+
+            <li class="list-group-item text-center p-4" th:if="${schedule.isPauseScheduled()}">
+                <h6>Your workout will be put on hold</h6>
+                <p>From: <span th:text="${schedule.getPauseFrom()}"></span></p>
+                <p>To: <span th:text="${schedule.getPauseTo()}"></span></p>
+                <form method="post" th:action="@{/schedule/break_cancel}">
+                    <button class="btn btn-danger" type="submit">
+                        Cancel break
+                    </button>
+                </form>
+            </li>
+            <li class="list-group-item text-center p-4" th:if="${schedule.isPaused()}">
+                <h6>Your workout is on hold</h6>
+                <p>From: <span th:text="${schedule.getPauseFrom()}"></span></p>
+                <p>To: <span th:text="${schedule.getPauseTo()}"></span></p>
+                <form method="post" th:action="@{/schedule/break_cancel}">
+                    <button class="btn btn-danger" type="submit">
+                        Return workout
+                    </button>
+                </form>
+            </li>
+        </ul>
+
+    </div>
+</div>
+</body>
+</html>

@@ -3,8 +3,7 @@ package de.othr.im.gymbro.model;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "workout_plan")
@@ -27,6 +26,11 @@ public class WorkoutPlan {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastCompletedAt;
+
+    @ElementCollection(targetClass = Weekday.class)
+    @CollectionTable
+    @Enumerated(EnumType.STRING)
+    private Set<Weekday> days = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -85,5 +89,13 @@ public class WorkoutPlan {
 
     public boolean isRunning() {
         return getLastStartedAt() != null && (getLastCompletedAt() == null || getLastCompletedAt().before(getLastStartedAt()));
+    }
+
+    public Set<Weekday> getDays() {
+        return days;
+    }
+
+    public void setDays(Set<Weekday> days) {
+        this.days = days;
     }
 }
