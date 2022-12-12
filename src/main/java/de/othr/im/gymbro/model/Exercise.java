@@ -1,5 +1,7 @@
 package de.othr.im.gymbro.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,6 +26,10 @@ public class Exercise {
     @ManyToOne
     @JoinColumn(name = "idplan")
     private WorkoutPlan plan;
+
+    @ManyToOne
+    @JoinColumn(name = "iduser")
+    private User user;
 
     public Long getId() {
         return id;
@@ -56,5 +62,13 @@ public class Exercise {
     public void setExerciseInformation(ExerciseInformation exerciseInformation) {
         this.exerciseType = exerciseInformation.getId();
         this.exerciseInformation = exerciseInformation;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

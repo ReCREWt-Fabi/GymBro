@@ -1,5 +1,7 @@
 package de.othr.im.gymbro.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import java.util.Date;
@@ -8,6 +10,7 @@ import java.util.Date;
 @Table(name = "exercise_set")
 public class ExerciseSet {
     @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinColumn(name = "idexercise")
     private Exercise exercise;
     @Id

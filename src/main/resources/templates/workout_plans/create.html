@@ -24,29 +24,30 @@
             </div>
 
             <div th:if="${isInitialized && exercises.isEmpty()}">
-                <p>Get started by adding an exercise to your plan!</p>
+                <p class="mb-3">Get started by adding an exercise to your plan, or select a template to kickstart your
+                    workout!</p>
+                <div class="d-grid text-center gap-3">
+                    <div class="row" style="column-gap: 16px">
+                        <a class="col p-4 template" th:each="temp:${planTemplates}"
+                           th:href="@{/workout_plans/create/apply_template(template=${temp}, planId=${plan.getId()})}"
+                           th:text="${temp.getName()}"></a>
+                    </div>
+                </div>
             </div>
 
             <ul class="list-group" th:if="${isInitialized && !exercises.isEmpty()}">
                 <li class="list-group-item" th:each="exercise : ${exercises}"
                     th:if="${exercise.getExerciseType() != null}">
-                    <h6 th:text="${exercise.getExerciseInformation().getName()}"/>
-                    <table>
-                        <tr>
-                            <th>SET</th>
-                            <th>KG</th>
-                            <th>REPS</th>
-                        </tr>
-                        <tr th:each="set : ${service.getSets(exercise)}">
-                            <td th:text="${set.ordering}"/>
-                            <td th:text="${set.weight}"/>
-                            <td th:text="${set.reps}"/>
-                        </tr>
-                        <tr>
-                            <a class="btn btn-light" th:href="@{|/workout_plans/create/edit_exercise/${exercise.id}|}">Edit
-                                exercise</a>
-                        </tr>
-                    </table>
+
+                    <div class="container-fluid p-2 m-0 text-center">
+                        <h6 class="d-inline" th:text="${exercise.getExerciseInformation().getName()}"/>
+                        <a th:href="@{/workout_plans/create/delete_exercise(exerciseId=${exercise.getId()}, planId=${plan.id})}"
+                           class="btn btn-light d-inline float-end">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        <p class="mb-0" th:text="${exercise.getExerciseInformation().getCategory().getLabel()}"/>
+                    </div>
+
                 </li>
             </ul>
             <a class="btn btn-dark mt-3" th:href="@{/workout_plans/create/add_exercise/(planId=${plan.id})}"

@@ -12,7 +12,17 @@
     <div style="width: 60%">
         <h1 class="pb-4" th:if="${planId} != null">Select Exercise</h1>
         <h1 class="pb-4" th:if="${planId} == null">Exercise Catalogue</h1>
-        <div class="list-group text-start">
+        <div>
+            <form method="post" th:action="@{/exercises/filter(planId=${planId})}" th:object="${filter}">
+                <input class="form-control mt-3 mb-2" name="search" placeholder="Search" type="text"
+                       th:field="*{query}"/>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            <form method="post" th:action="@{/exercises/reset_filter(planId=${planId})}">
+                <button class="btn btn-link mt-1" type="submit">Reset Filter</button>
+            </form>
+        </div>
+        <div class="list-group text-start mt-3">
             <div class="list-group-item" th:each="exercise: ${exercises}">
                 <h4 class="list-group-item-heading" th:text="${exercise.name}"/>
                 <div class="list-group-item-text">

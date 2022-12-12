@@ -17,7 +17,7 @@
         </div>
 
         <ul class="list-group" th:if="${!plans.isEmpty()}">
-            <li class="list-group-item pb-1" th:each="plan : ${plans}">
+            <a class="list-group-item" th:each="plan : ${plans}" th:href="@{/workout_plans/details(planId=${plan.getId()})}">
                 <form class="container-fluid p-2 m-0" method="post"
                       th:action="@{/workout_plans/delete(planId=${plan.getId()})}">
                     <div class="text-center">
@@ -30,10 +30,10 @@
                            type="button">
                             <i class="fa fa-share"></i>
                         </a>
-                        <p th:text="${service.getExerciseNamesOfPlanAsString(plan)}"/>
+                        <p class="mb-0" th:text="${service.getExerciseNamesOfPlanAsString(plan)}"/>
                     </div>
                 </form>
-            </li>
+            </a>
         </ul>
 
         <a class="btn btn-primary mt-3" href="/workout_plans/create">Create new plan</a>

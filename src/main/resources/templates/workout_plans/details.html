@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Your Workout Plan</h1>
+        <div class="form-group pb-3">
+            <h5 th:text="*{name}"/>
+        </div>
+
+        <div th:if="${exercises.isEmpty()}">
+            <p class="mb-3">Get started by adding an exercise to your plan, or select a template to kickstart your
+                workout!</p>
+            <div class="d-grid text-center gap-3">
+                <div class="row" style="column-gap: 16px">
+                    <a class="col p-4 template" th:each="temp:${planTemplates}"
+                       th:href="@{/workout_plans/details/apply_template(template=${temp}, planId=${plan.getId()})}"
+                       th:text="${temp.getName()}"></a>
+                </div>
+            </div>
+        </div>
+
+        <ul class="list-group" th:if="${!exercises.isEmpty()}">
+            <a class="list-group-item" th:each="exercise : ${exercises}" th:href="@{|/exercise_details/${exercise.getId()}|}">
+                <form class="container-fluid p-2 m-0" th:action="@{/workout_plans/details/delete_exercise(exerciseId=${exercise.getId()}, planId=${plan.id})}">
+                    <div class="text-center">
+                        <h6 class="d-inline" th:text="${exercise.getExerciseInformation().getName()}"/>
+                        <button type="submit" class="btn btn-light d-inline float-end">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        <p class="mb-0" th:text="${exercise.getExerciseInformation().getCategory().getLabel()}"/>
+                    </div>
+                </form>
+            </a>
+        </ul>
+        <a class="btn btn-dark mt-3" th:href="@{/workout_plans/details/add_exercise/(planId=${plan.id})}">
+            + Add exercise
+        </a>
+    </div>
+</div>
+</body>
+</html>

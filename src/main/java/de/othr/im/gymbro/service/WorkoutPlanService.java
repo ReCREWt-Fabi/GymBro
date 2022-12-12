@@ -4,12 +4,15 @@ import de.othr.im.gymbro.model.Exercise;
 import de.othr.im.gymbro.model.ExerciseSet;
 import de.othr.im.gymbro.model.User;
 import de.othr.im.gymbro.model.WorkoutPlan;
+import de.othr.im.gymbro.repository.ExerciseRepository;
 import de.othr.im.gymbro.repository.ExerciseSetRepository;
 import de.othr.im.gymbro.repository.WorkoutPlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,20 +24,28 @@ public class WorkoutPlanService {
     private final EmailService emailService;
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseSetRepository exerciseSetRepository;
+    private final ExerciseRepository exerciseRepository;
 
     @Autowired
-    public WorkoutPlanService(final ExerciseService exerciseService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository, final EmailService emailService) {
+    public WorkoutPlanService(final ExerciseService exerciseService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository, final EmailService emailService, final ExerciseRepository exerciseRepository) {
         this.exerciseService = exerciseService;
         this.workoutPlanRepository = workoutPlanRepository;
         this.exerciseSetRepository = exerciseSetRepository;
+        this.exerciseRepository = exerciseRepository;
         this.emailService = emailService;
     }
 
-    public List<ExerciseSet> getSets(final Exercise exercise) {
-        return exerciseSetRepository.findSetsByExercise(exercise.getId());
+    public List<ExerciseSet> getCompletedSets(final Exercise exercise) {
+        final List<ExerciseSet> exerciseSets = exerciseSetRepository.findSetsByExercise(exercise.getId()).stream().filter(ExerciseSet::isCompleted).toList();
+        final Map<Integer, List<ExerciseSet>> setsByOrder = exerciseSets.stream().collect(Collectors.groupingBy(ExerciseSet::getOrdering));
+        final List<ExerciseSet> recentCompleted = setsByOrder.values().stream().map(sets -> sets.stream().max(Comparator.comparing(ExerciseSet::getCompletedAt))).filter(Optional::isPresent).map(Optional::get).toList();
+        return recentCompleted;
     }
 
     public void deletePlan(final Long id) {
+        final Optional<WorkoutPlan> workoutPlan = workoutPlanRepository.findById(id);
+        if (workoutPlan.isEmpty()) return;
+        exerciseService.removeExercisesFromPlan(workoutPlan.get());
         workoutPlanRepository.deleteById(id);
     }
 

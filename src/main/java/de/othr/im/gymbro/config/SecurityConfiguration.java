@@ -25,7 +25,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/unauthenticated/**", "/error/**").permitAll()
+        http.authorizeRequests().antMatchers("/unauthenticated/**", "/error/**", "/webjars/**", "/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable().formLogin().loginPage("/unauthenticated/login").defaultSuccessUrl("/home")
                 .and().logout().logoutUrl("/unauthenticated/logout").logoutSuccessUrl("/unauthenticated/login?logout").invalidateHttpSession(true).clearAuthentication(true)

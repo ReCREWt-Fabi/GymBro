@@ -2,6 +2,8 @@ package de.othr.im.gymbro.controller;
 
 import de.othr.im.gymbro.config.GymBroUserDetails;
 import de.othr.im.gymbro.model.WorkoutPlan;
+import de.othr.im.gymbro.model.WorkoutPlanTemplates;
+import de.othr.im.gymbro.service.ExerciseService;
 import de.othr.im.gymbro.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,10 +25,12 @@ import java.util.Optional;
 public class CreatePlanController {
 
     private final WorkoutPlanService workoutPlanService;
+    private final ExerciseService exerciseService;
 
     @Autowired
-    public CreatePlanController(final WorkoutPlanService workoutPlanService) {
+    public CreatePlanController(final WorkoutPlanService workoutPlanService, final ExerciseService exerciseService) {
         this.workoutPlanService = workoutPlanService;
+        this.exerciseService = exerciseService;
     }
 
     @RequestMapping({"", "/"})
@@ -44,7 +48,16 @@ public class CreatePlanController {
         model.addAttribute("plan", plan);
         model.addAttribute("exercises", workoutPlanService.getExercises(plan));
         model.addAttribute("service", workoutPlanService);
+        model.addAttribute("planTemplates", WorkoutPlanTemplates.values());
         return "workout_plans/create";
+    }
+
+    @RequestMapping("/apply_template")
+    public String templateSelected(final @RequestParam Long planId, final @RequestParam WorkoutPlanTemplates template, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
+        for (final String type : template.getExercises()) {
+            exerciseService.createExercise(type, planId, userDetails.getUser());
+        }
+        return "redirect:/workout_plans/create?planId=" + planId;
     }
 
     @RequestMapping("/add_exercise")
@@ -53,7 +66,7 @@ public class CreatePlanController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/submit")
-    public ModelAndView updateUser(@Valid @ModelAttribute("plan") final WorkoutPlan formResult, final @RequestParam Long planId, final BindingResult bindingResult) {
+    public ModelAndView savePlan(@Valid @ModelAttribute("plan") final WorkoutPlan formResult, final @RequestParam Long planId, final BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return new ModelAndView("redirect:/workout_plans/create?planId=" + planId);
         final Optional<WorkoutPlan> plan = workoutPlanService.getPlan(planId);
         if (plan.isPresent()) {
@@ -61,6 +74,12 @@ public class CreatePlanController {
             updatedPlan.setName(formResult.getName());
             workoutPlanService.updatePlan(updatedPlan);
         }
+        return new ModelAndView("redirect:/workout_plans/create?planId=" + planId);
+    }
+
+    @RequestMapping(value = "/delete_exercise")
+    public ModelAndView deleteExercise(final @RequestParam Long exerciseId, final @RequestParam Long planId) {
+        exerciseService.deleteExercise(exerciseId);
         return new ModelAndView("redirect:/workout_plans/create?planId=" + planId);
     }
 }
