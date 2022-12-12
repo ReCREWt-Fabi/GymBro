@@ -13,8 +13,19 @@
 
 <div layout:fragment="content">
 
-    <div align="left" style="width: 60%">
-        <h1>Welcome back!</h1>
+    <div class="text-center" style="width: 60%">
+        <h1 class="mb-5">Welcome back!</h1>
+        <div>
+            <h4 class="mb-3">Your current Workout:</h4>
+            <a class="template p-4 d-block" th:if="${currentPlan != null}" th:href="@{/workout_plans/details(planId=${currentPlan.getId()})}">
+                <h6 class="d-inline" th:text="${currentPlan.name}"/>
+                <p class="mb-0 mt-1" th:text="${service.getExerciseNamesOfPlanAsString(currentPlan)}"/>
+            </a>
+            <div class="template p-4" th:if="${currentPlan == null}">
+                <p class="mb-0">No workout running at the moment…</p>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>

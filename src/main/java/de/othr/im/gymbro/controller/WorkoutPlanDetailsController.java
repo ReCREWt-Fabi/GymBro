@@ -4,21 +4,14 @@ import de.othr.im.gymbro.config.GymBroUserDetails;
 import de.othr.im.gymbro.model.WorkoutPlan;
 import de.othr.im.gymbro.model.WorkoutPlanTemplates;
 import de.othr.im.gymbro.service.ExerciseService;
-import de.othr.im.gymbro.service.WorkoutPlanDetailsService;
 import de.othr.im.gymbro.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
-import java.util.Optional;
 
 
 @Controller

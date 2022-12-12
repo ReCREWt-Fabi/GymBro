@@ -89,4 +89,8 @@ public class WorkoutPlanService {
             e.printStackTrace();
         }
     }
+
+    public boolean isSetCompletedInCurrentWorkout(final WorkoutPlan plan, final ExerciseSet set) {
+        return set.isCompleted() && set.getCompletedAt().after(plan.getLastStartedAt());
+    }
 }

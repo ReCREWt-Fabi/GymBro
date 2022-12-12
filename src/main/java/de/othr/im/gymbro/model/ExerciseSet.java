@@ -1,16 +1,18 @@
 package de.othr.im.gymbro.model;
 
-import org.hibernate.annotations.Cascade;
+import org.thymeleaf.expression.Lists;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "exercise_set")
 public class ExerciseSet {
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinColumn(name = "idexercise")
     private Exercise exercise;
     @Id
@@ -39,9 +41,13 @@ public class ExerciseSet {
         this.exercise = exercise;
     }
 
-    public static ExerciseSet createForExercise(Exercise exercise) {
+    public static ExerciseSet createForExercise(Exercise exercise, List<ExerciseSet> completedSets, int nextIndex) {
+        final ExerciseSet lastSet = completedSets.stream().max(Comparator.comparing(ExerciseSet::getCompletedAt)).orElse(new ExerciseSet());
         ExerciseSet set = new ExerciseSet();
+        set.setOrdering(nextIndex);
         set.setExercise(exercise);
+        set.setReps(lastSet.getReps());
+        set.setWeight(lastSet.getWeight());
         return set;
     }
 

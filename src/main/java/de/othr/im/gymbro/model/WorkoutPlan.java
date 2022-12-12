@@ -3,6 +3,7 @@ package de.othr.im.gymbro.model;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,12 @@ public class WorkoutPlan {
     @JoinColumn(name = "iduser", referencedColumnName = "id")
     @Valid
     private User user;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastStartedAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastCompletedAt;
 
     @ManyToMany
     @JoinTable(
@@ -58,5 +65,25 @@ public class WorkoutPlan {
 
     public void setFollowers(List<User> followers) {
         this.followers = followers;
+    }
+
+    public Date getLastStartedAt() {
+        return lastStartedAt;
+    }
+
+    public void setLastStartedAt(Date lastStartedAt) {
+        this.lastStartedAt = lastStartedAt;
+    }
+
+    public Date getLastCompletedAt() {
+        return lastCompletedAt;
+    }
+
+    public void setLastCompletedAt(Date lastCompletedAt) {
+        this.lastCompletedAt = lastCompletedAt;
+    }
+
+    public boolean isRunning() {
+        return getLastStartedAt() != null && (getLastCompletedAt() == null || getLastCompletedAt().before(getLastStartedAt()));
     }
 }

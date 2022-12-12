@@ -3,6 +3,7 @@ package de.othr.im.gymbro.model;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "exercise")
@@ -30,6 +31,9 @@ public class Exercise {
     @ManyToOne
     @JoinColumn(name = "iduser")
     private User user;
+
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<ExerciseSet> sets;
 
     public Long getId() {
         return id;

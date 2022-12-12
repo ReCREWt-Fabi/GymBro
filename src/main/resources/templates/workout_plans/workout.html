@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/logged-in-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="width: 60%">
+        <h1 class="pb-4">Log Workout</h1>
+        <h3 th:text="*{name}"/>
+        <form method="post" th:action="@{/workout/complete(planId=${plan.id})}">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="exercise : *{exercises}">
+                    <div class="p-2 m-0 text-center">
+                        <h6>
+                            <a th:text="${exercise.getExerciseInformation().getName()}" th:href="@{|/exercise_details/${exercise.getId()}/|}"></a>
+                        </h6>
+                    </div>
+                    <table class="mt-2 table" style="width: 60%">
+                        <thead>
+                        <tr>
+                            <th scope="col">SET</th>
+                            <th scope="col">KG</th>
+                            <th scope="col">REPS</th>
+                            <th scope="col"><i class="fa fa-check" style="color: black"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="set, iter : ${service.getCompletedSets(exercise)}">
+                            <th scope="row" th:text="${set.ordering}"/>
+                            <td th:text="${set.weight}"/>
+                            <td th:text="${set.reps}"/>
+                            <td>
+                                <a class="btn btn-light"
+                                   th:if="${!service.isSetCompletedInCurrentWorkout(plan, set)}"
+                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set?setId=${set.getId()}|}">
+                                    <span class="btn-label"><i class="fa fa-check"></i></span>
+                                </a>
+                                <a type="button" class="btn btn-success"
+                                   th:if="${service.isSetCompletedInCurrentWorkout(plan, set)}"
+                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set?setId=${set.getId()}|}">
+                                    <span class="btn-label"><i class="fa fa-check"></i></span>
+                                </a>
+                                <a class="btn btn-danger ms-1"
+                                   th:if = "${iter.last}"
+                                   th:href="@{|/exercise_details/${exercise.getId()}/delete_set/${set.getId()}|}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                <a class="btn btn-dark"
+                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set/|}">
+                                    + Add set
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <button type="submit" class="btn btn-labeled btn-success mt-3">
+                <span class="btn-label"><i class="fa fa-check"></i></span>
+                Finish workout
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

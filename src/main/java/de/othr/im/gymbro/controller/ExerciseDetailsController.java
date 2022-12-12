@@ -4,6 +4,7 @@ import de.othr.im.gymbro.model.Exercise;
 import de.othr.im.gymbro.model.ExerciseSet;
 import de.othr.im.gymbro.repository.ExerciseSetRepository;
 import de.othr.im.gymbro.service.ExerciseService;
+import de.othr.im.gymbro.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,13 @@ import java.util.Optional;
 @Controller
 @RequestMapping(value = {"/exercise_details"})
 public class ExerciseDetailsController {
+    private final WorkoutPlanService workoutPlanService;
     private final ExerciseService exerciseService;
     private final ExerciseSetRepository exerciseSetRepository;
 
     @Autowired
-    public ExerciseDetailsController(ExerciseService exerciseService, ExerciseSetRepository exerciseSetRepository) {
+    public ExerciseDetailsController(WorkoutPlanService workoutPlanService, ExerciseService exerciseService, ExerciseSetRepository exerciseSetRepository) {
+        this.workoutPlanService = workoutPlanService;
         this.exerciseService = exerciseService;
         this.exerciseSetRepository = exerciseSetRepository;
     }
@@ -55,10 +58,16 @@ public class ExerciseDetailsController {
 
     @RequestMapping({"/{id}/track_set"})
     public String showTrackSet(@PathVariable("id") Long exerciseId, @RequestParam(required = false) Long setId, Model model) {
-        Exercise exercise = exerciseService.getExercise(exerciseId);
+        final Exercise exercise = exerciseService.getExercise(exerciseId);
         if (exercise != null) {
-            Optional<ExerciseSet> set = setId != null ? exerciseSetRepository.findById(setId) : Optional.empty();
-            model.addAttribute("set", set.orElseGet(() -> ExerciseSet.createForExercise(exercise)));
+            final Optional<ExerciseSet> maybeSet = setId != null ? exerciseSetRepository.findById(setId) : Optional.empty();
+            final ExerciseSet set = maybeSet.orElseGet(() -> {
+                        final List<ExerciseSet> completedSets = workoutPlanService.getCompletedSets(exercise);
+                        final int nextIndex = completedSets.size() + 1;
+                        return ExerciseSet.createForExercise(exercise, completedSets, nextIndex);
+                    }
+            );
+            model.addAttribute("set", set);
             model.addAttribute("exercise", exercise);
         } else {
             model.addAttribute("errors", "Exercise not found!");
@@ -70,16 +79,17 @@ public class ExerciseDetailsController {
     @RequestMapping({"/{id}/delete_set/{sid}"})
     public String deleteSet(@PathVariable("id") Long exerciseId, @PathVariable("sid") Long setId) {
         exerciseSetRepository.deleteById(setId);
-        return "redirect:/exercise_details/" + exerciseId;
+        final Exercise exercise = exerciseService.getExercise(exerciseId);
+        return "redirect:/workout?planId=" + exercise.getPlan().getId();
     }
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/{id}/track_set/submit")
     public ModelAndView updateUser(@PathVariable("id") Long exerciseId, @Valid @ModelAttribute("set") final ExerciseSet set, final BindingResult bindingResult) {
-        return trackSet(exerciseId, set, bindingResult);
+        return trackSet(set, bindingResult);
     }
 
-    private ModelAndView trackSet(Long exerciseId, ExerciseSet set, BindingResult result) {
+    private ModelAndView trackSet(ExerciseSet set, BindingResult result) {
         final ModelAndView mv = new ModelAndView();
         if (result.hasErrors()) {
             mv.setViewName("exercise/exercise-details");
@@ -87,7 +97,7 @@ public class ExerciseDetailsController {
         }
         set.setCompletedAt(new Date());
         exerciseSetRepository.save(set);
-        mv.setViewName("redirect:/exercise_details/" + exerciseId);
+        mv.setViewName("redirect:/workout?planId=" + set.getExercise().getPlan().getId());
         return mv;
     }
 }

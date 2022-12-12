@@ -38,10 +38,31 @@
                         <p class="mb-0" th:text="${exercise.getExerciseInformation().getCategory().getLabel()}"/>
                     </div>
                 </form>
+                <table class="table" style="width: 60%" th:if="${!service.getCompletedSets(exercise).isEmpty()}">
+                    <thead>
+                    <tr>
+                        <th scope="col">SET</th>
+                        <th scope="col">KG</th>
+                        <th scope="col">REPS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="set : ${service.getCompletedSets(exercise)}">
+                        <th scope="row" th:text="${set.ordering}"/>
+                        <td th:text="${set.weight}"/>
+                        <td th:text="${set.reps}"/>
+                    </tr>
+                    </tbody>
+                </table>
             </a>
         </ul>
         <a class="btn btn-dark mt-3" th:href="@{/workout_plans/details/add_exercise/(planId=${plan.id})}">
             + Add exercise
+        </a>
+        <a class="btn btn-primary mt-3 ms-2" th:href="@{/workout(planId=${plan.id})}">
+            <span class="btn-label"><i class="fa fa-play"></i></span>
+            <span th:if="${!plan.isRunning()}">Start workout</span>
+            <span th:if="${plan.isRunning()}">Continue workout</span>
         </a>
     </div>
 </div>

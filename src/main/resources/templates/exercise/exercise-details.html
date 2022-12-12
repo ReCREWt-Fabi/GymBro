@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <h4 class="pb-2">Sets</h4>
+        <h4 class="pb-2">Completed Sets</h4>
         <ul class="list-group mb-3">
             <li class="list-group-item" th:each="set : ${sets}">
                 <div class="p-2">
@@ -52,21 +52,10 @@
                         <span class="fw-bold">Notes: </span>
                         <span th:text="${set.notes != null} ? ${set.notes} : '-'"/>
                     </p>
-                    <div>
-                        <a class="btn btn-primary"
-                           th:href="@{/exercise_details/{id}/track_set(id=${exercise.id}, setId=${set.id})}">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger"
-                           th:href="@{/exercise_details/{id}/delete_set/{sid}(id=${exercise.id},sid=${set.id})}">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </div>
                 </div>
             </li>
         </ul>
     </div>
-    <a class="btn btn-primary" th:href="@{/exercise_details/{id}/track_set(id=${exercise.id})}">Track set</a>
 </div>
 </body>
 </html>
