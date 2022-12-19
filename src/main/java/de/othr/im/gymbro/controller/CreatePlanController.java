@@ -67,7 +67,9 @@ public class CreatePlanController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/submit")
     public ModelAndView savePlan(@Valid @ModelAttribute("plan") final WorkoutPlan formResult, final @RequestParam Long planId, final BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return new ModelAndView("redirect:/workout_plans/create?planId=" + planId);
+        if (bindingResult.hasFieldErrors("plan")) {
+            return new ModelAndView("redirect:/workout_plans/create?planId=" + planId);
+        }
         final Optional<WorkoutPlan> plan = workoutPlanService.getPlan(planId);
         if (plan.isPresent()) {
             final WorkoutPlan updatedPlan = plan.get();

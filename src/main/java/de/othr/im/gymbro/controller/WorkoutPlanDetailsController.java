@@ -38,8 +38,8 @@ public class WorkoutPlanDetailsController {
 
     @RequestMapping("/apply_template")
     public String templateSelected(final @RequestParam Long planId, final @RequestParam WorkoutPlanTemplates template, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
-        for (final String type : template.getExercises()) {
-            exerciseService.createExercise(type, planId, userDetails.getUser());
+        for (final String exerciseId : template.getExercises()) {
+            exerciseService.createExercise(exerciseId, planId, userDetails.getUser());
         }
         return "redirect:/workout_plans/details?planId=" + planId;
     }

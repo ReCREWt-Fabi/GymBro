@@ -33,12 +33,12 @@ public class User {
     @Max(value = 299, message = "Height must be less than 300 cm!")
     private int height;
 
-    @Min(value = 0, message = "Height must be positive!")
-    @Max(value = 999, message = "Height must be less than 1000 kg!")
+    @Min(value = 0, message = "Weight must be positive!")
+    @Max(value = 999, message = "Weight must be less than 1000 kg!")
     private int weight;
 
-    @Min(value = 0, message = "Height must be positive!")
-    @Max(value = 5, message = "Height must be max. 5 min!")
+    @Min(value = 0, message = "Rest Time must be positive!")
+    @Max(value = 5, message = "Max. Rest Time is 5 min!")
     private int restTime;
 
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)

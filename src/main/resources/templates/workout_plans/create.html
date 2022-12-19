@@ -19,7 +19,7 @@
                        th:if="${!isInitialized}"
                        type="text"/>
                 <h5 th:if="${isInitialized}" th:text="*{name}"/>
-                <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('name')}"
+                <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('name')}"
                    th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"/>
             </div>
 

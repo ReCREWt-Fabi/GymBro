@@ -15,7 +15,7 @@ import java.util.Optional;
 
 
 @Controller
-@RequestMapping(value = {"/home"})
+@RequestMapping(value = {"/"})
 public class HomeController {
 
     private final WorkoutPlanService workoutPlanService;
