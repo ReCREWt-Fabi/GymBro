@@ -93,4 +93,6 @@ public class WorkoutPlanService {
     public boolean isSetCompletedInCurrentWorkout(final WorkoutPlan plan, final ExerciseSet set) {
         return set.isCompleted() && set.getCompletedAt().after(plan.getLastStartedAt());
     }
+
+    public List<WorkoutPlan> getAllPlans() { return workoutPlanRepository.findAll(); }
 }

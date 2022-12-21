@@ -47,18 +47,24 @@ public class WorkoutPlansController {
     }
 
     @RequestMapping({"/{id}/follow"})
-    public String followWorkoutPlan(final Model model, final @PathVariable Long id, @AuthenticationPrincipal GymBroUserDetails userDetails) {
+    public String followWorkoutPlan(final Model model, final @PathVariable Long id,
+                                    final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         Optional<WorkoutPlan> plan = workoutPlanService.getPlan(id);
         if (plan.isPresent()) {
             User user = userDetails.getUser();
-            plan.get().getFollowers().add(user);
-            workoutPlanService.updatePlan(plan.get());
-            model.addAttribute("result", "You are now following this plan!");
-            model.addAttribute("plan", plan.get());
+            if (plan.get().getFollowers().contains(user)) {
+                model.addAttribute("result", "You already follow this plan!");
+                model.addAttribute("plan", plan.get());
+            } else {
+                plan.get().getFollowers().add(user);
+                user.addFollowedPlan(plan.get());
+                workoutPlanService.updatePlan(plan.get());
+                model.addAttribute("result", "You are now following this plan!");
+            }
         } else {
             model.addAttribute("result", "This plan does not exist!");
         }
-        return "workout_plans/followed";
+        return "redirect:/followed";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{id}/share/submit")
@@ -72,5 +78,7 @@ public class WorkoutPlansController {
         mv.setViewName("redirect:/workout_plans");
         return mv;
     }
+
+
 
 }

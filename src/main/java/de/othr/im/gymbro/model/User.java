@@ -8,7 +8,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
@@ -136,6 +135,10 @@ public class User {
     public List<WorkoutPlan> getFollowedPlans() {
         return followedPlans;
     }
+
+    public void addFollowedPlan(WorkoutPlan plan) { this.followedPlans.add(plan); }
+
+    public void removeFollowedPlan(WorkoutPlan plan) { this.followedPlans.remove(plan); }
 
     public void setFollowedPlans(List<WorkoutPlan> followedPlans) {
         this.followedPlans = followedPlans;

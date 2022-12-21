@@ -1,12 +1,15 @@
 package de.othr.im.gymbro.controller;
 
+import de.othr.im.gymbro.config.GymBroUserDetails;
 import de.othr.im.gymbro.model.Exercise;
 import de.othr.im.gymbro.model.ExerciseSet;
+import de.othr.im.gymbro.model.User;
 import de.othr.im.gymbro.repository.ExerciseSetRepository;
 import de.othr.im.gymbro.service.ExerciseService;
 import de.othr.im.gymbro.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -85,17 +88,21 @@ public class ExerciseDetailsController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/{id}/track_set/submit")
-    public ModelAndView updateUser(@PathVariable("id") Long exerciseId, @Valid @ModelAttribute("set") final ExerciseSet set, final BindingResult bindingResult) {
-        return trackSet(set, bindingResult);
+    public ModelAndView updateUser(@PathVariable("id") Long exerciseId,
+                                   @Valid @ModelAttribute("set") final ExerciseSet set,
+                                   final BindingResult bindingResult,
+                                   @AuthenticationPrincipal GymBroUserDetails userDetails) {
+        return trackSet(set, bindingResult, userDetails.getUser());
     }
 
-    private ModelAndView trackSet(ExerciseSet set, BindingResult result) {
+    private ModelAndView trackSet(ExerciseSet set, BindingResult result, User user) {
         final ModelAndView mv = new ModelAndView();
         if (result.hasErrors()) {
             mv.setViewName("exercise/exercise-details");
             return mv;
         }
         set.setCompletedAt(new Date());
+        set.setUser(user);
         exerciseSetRepository.save(set);
         mv.setViewName("redirect:/workout?planId=" + set.getExercise().getPlan().getId());
         return mv;
