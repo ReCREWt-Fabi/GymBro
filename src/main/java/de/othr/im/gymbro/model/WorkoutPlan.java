@@ -76,8 +76,32 @@ public class WorkoutPlan {
         return followers;
     }
 
+    public boolean isFollower(User user) {
+        boolean result = false;
+        for(User u : this.getFollowers()) {
+            if(Objects.equals(u.getId(), user.getId())) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
     public void setFollowers(List<User> followers) {
         this.followers = followers;
+    }
+
+    public boolean removeFollower(User user) {
+        boolean result = false;
+        for(int i = 0; i < this.followers.size(); i++) {
+            User current = this.followers.get(i);
+            if(Objects.equals(current.getId(), user.getId())) {
+                this.followers.remove(i);
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     public Date getLastStartedAt() {
@@ -120,11 +144,13 @@ public class WorkoutPlan {
     }
 
     public boolean removeStartedBy(User user) {
-        boolean result;
-        if(this.startedBy.remove(user)) {
-            result = true;
-        } else {
-            result = false;
+        boolean result = false;
+        for(int i = 0; i<this.startedBy.size(); i++) {
+            if (Objects.equals(this.startedBy.get(i).getId(), user.getId())) {
+                this.startedBy.remove(i);
+                result = true;
+                break;
+            }
         }
         return result;
     }

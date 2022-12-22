@@ -5,12 +5,12 @@ import de.othr.im.gymbro.model.User;
 import de.othr.im.gymbro.model.WorkoutPlan;
 import de.othr.im.gymbro.model.WorkoutPlanTemplates;
 import de.othr.im.gymbro.service.ExerciseService;
+import de.othr.im.gymbro.service.UserProfileService;
 import de.othr.im.gymbro.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,11 +23,15 @@ import java.util.Optional;
 @RequestMapping(value = {"/workout_plans/details"})
 public class WorkoutPlanDetailsController {
     private final WorkoutPlanService workoutPlanService;
+    private final UserProfileService userProfileService;
     private final ExerciseService exerciseService;
 
     @Autowired
-    public WorkoutPlanDetailsController(final WorkoutPlanService workoutPlanService, final ExerciseService exerciseService) {
+    public WorkoutPlanDetailsController(final WorkoutPlanService workoutPlanService,
+                                        final UserProfileService userProfileService,
+                                        final ExerciseService exerciseService) {
         this.workoutPlanService = workoutPlanService;
+        this.userProfileService = userProfileService;
         this.exerciseService = exerciseService;
     }
 
@@ -74,18 +78,27 @@ public class WorkoutPlanDetailsController {
         Optional<WorkoutPlan> plan = workoutPlanService.getPlan(planId);
         if (plan.isPresent()) {
             User user = userDetails.getUser();
-            if (plan.get().getFollowers().contains(user)) {
-                plan.get().getFollowers().remove(user);
-                user.removeFollowedPlan(plan.get());
-                workoutPlanService.updatePlan(plan.get());
-                model.addAttribute("result", "Fuck this!");
+            if (plan.get().isFollower(user)) {
+                if (plan.get().removeFollower(user) && user.removeFollowedPlan(plan.get())) {
+                    if (plan.get().isRunning(user)) {
+                        plan.get().removeStartedBy(user);
+                    }
+                    workoutPlanService.updatePlan(plan.get());
+                    userProfileService.repoUpdateUser(user);
+                    model.addAttribute("result", "Unfollowed Plan");
+                } else {
+                    model.addAttribute("result", "Error unfollowing plan");
+                }
             } else {
                 model.addAttribute("result", "You are not following this plan!");
+
             }
         } else {
             model.addAttribute("result", "This plan does not exist!");
         }
-        return "redirect:/followed";
+        model.addAttribute("plans", userDetails.getUser().getFollowedPlans());
+        model.addAttribute("service", workoutPlanService);
+        return "workout_plans/followed";
     }
 
 }

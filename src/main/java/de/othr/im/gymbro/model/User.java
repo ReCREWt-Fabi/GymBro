@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -138,7 +139,18 @@ public class User {
 
     public void addFollowedPlan(WorkoutPlan plan) { this.followedPlans.add(plan); }
 
-    public void removeFollowedPlan(WorkoutPlan plan) { this.followedPlans.remove(plan); }
+    public boolean removeFollowedPlan(WorkoutPlan plan) {
+        boolean result = false;
+        for(int i = 0; i < this.followedPlans.size(); i++) {
+            WorkoutPlan current = this.followedPlans.get(i);
+            if(Objects.equals(current.getId(), plan.getId())) {
+                this.followedPlans.remove(i);
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
 
     public void setFollowedPlans(List<WorkoutPlan> followedPlans) {
         this.followedPlans = followedPlans;
