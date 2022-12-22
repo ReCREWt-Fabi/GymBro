@@ -3,6 +3,7 @@ package de.othr.im.gymbro.model;
 import org.thymeleaf.expression.Lists;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Comparator;
 import java.util.Date;
@@ -30,6 +31,12 @@ public class ExerciseSet {
     private Date completedAt;
 
     private String notes;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "iduser", referencedColumnName = "id")
+    @Valid
+    private User user;
+
 
     public ExerciseSet() {
     }
@@ -110,4 +117,8 @@ public class ExerciseSet {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user; }
 }

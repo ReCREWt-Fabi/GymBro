@@ -63,7 +63,12 @@ public class ExerciseService {
     }
 
     public void deleteExercise(final Long id) {
-        this.exerciseRepository.deleteById(id);
+        if(this.getExercise(id) == null){
+            // TODO: Implement Warning
+            return;
+        } else {
+            this.exerciseRepository.deleteById(id);
+        }
     }
 
 

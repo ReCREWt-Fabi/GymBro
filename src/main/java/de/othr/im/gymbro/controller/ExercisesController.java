@@ -46,7 +46,7 @@ public class ExercisesController {
     public String showExerciseSelector(@PathVariable("id") final String exerciseId, @RequestParam(required = false) Long planId, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         if (planId != null) {
             this.exerciseService.createExercise(exerciseId, planId, userDetails.getUser());
-            return "redirect:/workout_plans/create?planId=" + planId;
+            return "redirect:/workout_plans/details?planId=" + planId;
         }
         return "redirect:/exercises";
     }

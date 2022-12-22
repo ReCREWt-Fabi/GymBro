@@ -5,6 +5,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.*;
 
+import static java.lang.System.in;
+
 @Entity
 @Table(name = "workout_plan")
 public class WorkoutPlan {
@@ -20,6 +22,13 @@ public class WorkoutPlan {
     @JoinColumn(name = "iduser", referencedColumnName = "id")
     @Valid
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "plan_started_by",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "plan_id"))
+    private List<User> startedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastStartedAt;
@@ -67,8 +76,32 @@ public class WorkoutPlan {
         return followers;
     }
 
+    public boolean isFollower(User user) {
+        boolean result = false;
+        for(User u : this.getFollowers()) {
+            if(Objects.equals(u.getId(), user.getId())) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
     public void setFollowers(List<User> followers) {
         this.followers = followers;
+    }
+
+    public boolean removeFollower(User user) {
+        boolean result = false;
+        for(int i = 0; i < this.followers.size(); i++) {
+            User current = this.followers.get(i);
+            if(Objects.equals(current.getId(), user.getId())) {
+                this.followers.remove(i);
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     public Date getLastStartedAt() {
@@ -87,8 +120,9 @@ public class WorkoutPlan {
         this.lastCompletedAt = lastCompletedAt;
     }
 
-    public boolean isRunning() {
-        return getLastStartedAt() != null && (getLastCompletedAt() == null || getLastCompletedAt().before(getLastStartedAt()));
+    public boolean isRunning(User user) {
+        return this.inStartedBy(user) && getLastStartedAt() != null && (getLastCompletedAt() == null ||
+                getLastCompletedAt().before(getLastStartedAt()));
     }
 
     public Set<Weekday> getDays() {
@@ -97,5 +131,38 @@ public class WorkoutPlan {
 
     public void setDays(Set<Weekday> days) {
         this.days = days;
+    }
+
+    public void setStarted_by(List<User> users) { this.startedBy = users; }
+
+    public List<User> getStarted_by() { return this.startedBy; }
+
+    public void addStartedBy(User user) {
+        if (!this.inStartedBy(user)) {
+            this.startedBy.add(user);
+        }
+    }
+
+    public boolean removeStartedBy(User user) {
+        boolean result = false;
+        for(int i = 0; i<this.startedBy.size(); i++) {
+            if (Objects.equals(this.startedBy.get(i).getId(), user.getId())) {
+                this.startedBy.remove(i);
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public boolean inStartedBy(User user) {
+        boolean result = false;
+        for(User scope : this.startedBy) {
+            if (Objects.equals(scope.getId(), user.getId())) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 }

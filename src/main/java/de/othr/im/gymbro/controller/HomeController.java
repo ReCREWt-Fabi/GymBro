@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Controller
-@RequestMapping(value = {"/home"})
+@RequestMapping(value = {"/"})
 public class HomeController {
 
     private final WorkoutPlanService workoutPlanService;
@@ -27,12 +28,16 @@ public class HomeController {
 
     @RequestMapping({"", "/"})
     public String showHomeScreen(final Model model, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
-        final WorkoutPlan currentPlan = workoutPlanService.getPlans(userDetails.getUser()).stream()
-                .filter(plan -> plan.isRunning())
-                .max(Comparator.comparing(WorkoutPlan::getLastStartedAt)).orElse(null);
-        model.addAttribute("currentPlan", currentPlan);
+        final List<WorkoutPlan> currentPlans = workoutPlanService.getAllPlans().stream()
+                .filter(plan -> plan.isRunning(userDetails.getUser())).collect(Collectors.toList());
+        model.addAttribute("plans", currentPlans);
         model.addAttribute("service", workoutPlanService);
         return "home";
+    }
+
+    @RequestMapping({"/about"})
+    public String showAbout() {
+        return "base/about";
     }
 
 }

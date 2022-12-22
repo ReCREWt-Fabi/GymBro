@@ -30,6 +30,7 @@ public class WorkoutController {
     public String showWorkoutScreen(final Model model, @RequestParam final Long planId, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         final WorkoutPlan plan = workoutPlanService.getPlan(planId).orElseGet(() -> workoutPlanService.createPlan(userDetails.getUser()));
         if (plan.getLastCompletedAt() == null || plan.getLastCompletedAt().after(plan.getLastStartedAt())) {
+            plan.addStartedBy(userDetails.getUser());
             plan.setLastStartedAt(new Date());
             workoutPlanService.updatePlan(plan);
         }
@@ -40,11 +41,16 @@ public class WorkoutController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = {"/complete"})
-    public String completeWorkout(@RequestParam final Long planId) {
+    public String completeWorkout(@RequestParam final Long planId, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         final WorkoutPlan plan = workoutPlanService.getPlan(planId).orElseThrow();
         if (plan.getLastCompletedAt() == null || plan.getLastCompletedAt().before(plan.getLastStartedAt())) {
-            plan.setLastCompletedAt(new Date());
-            workoutPlanService.updatePlan(plan);
+            if(plan.removeStartedBy(userDetails.getUser())) {
+                plan.setLastCompletedAt(new Date());
+                workoutPlanService.updatePlan(plan);
+            } else {
+                // TODO: treat error,
+                return "redirect:/home";
+            }
         }
         return "redirect:/workout_plans";
     }

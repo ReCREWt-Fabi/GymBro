@@ -26,4 +26,9 @@ public class UserProfileService {
         mv.setViewName("redirect:/user_profile");
         return mv;
     }
+
+    public void repoUpdateUser(final User user) {
+        userRepository.save(user);
+    }
+
 }

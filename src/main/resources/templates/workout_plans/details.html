@@ -15,7 +15,7 @@
             <h5 th:text="*{name}"/>
         </div>
 
-        <div th:if="${exercises.isEmpty()}">
+        <div th:if="${exercises.isEmpty() && !read_only}">
             <p class="mb-3">Get started by adding an exercise to your plan, or select a template to kickstart your
                 workout!</p>
             <div class="d-grid text-center gap-3">
@@ -27,12 +27,16 @@
             </div>
         </div>
 
+        <div th:if="${exercises.isEmpty() && read_only}">
+            <p class="mb-3">Looks like there are no workouts here yet! Tell the author to add workouts.</p>
+        </div>
+
         <ul class="list-group" th:if="${!exercises.isEmpty()}">
             <a class="list-group-item" th:each="exercise : ${exercises}" th:href="@{|/exercise_details/${exercise.getId()}|}">
-                <form class="container-fluid p-2 m-0" th:action="@{/workout_plans/details/delete_exercise(exerciseId=${exercise.getId()}, planId=${plan.id})}">
+                <form class="container-fluid p-2 m-0" th:action="@{/workout_plans/details/delete_exercise(exerciseId=${exercise.getId()}, planId=${plan.id})}" method="post">
                     <div class="text-center">
                         <h6 class="d-inline" th:text="${exercise.getExerciseInformation().getName()}"/>
-                        <button type="submit" class="btn btn-light d-inline float-end">
+                        <button th:if="${!read_only}" type="submit" class="btn btn-light d-inline float-end">
                             <i class="fa fa-trash"></i>
                         </button>
                         <p class="mb-0" th:text="${exercise.getExerciseInformation().getCategory().getLabel()}"/>
@@ -44,6 +48,7 @@
                         <th scope="col">SET</th>
                         <th scope="col">KG</th>
                         <th scope="col">REPS</th>
+                        <th scope="col">BY USER</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -51,18 +56,22 @@
                         <th scope="row" th:text="${set.ordering}"/>
                         <td th:text="${set.weight}"/>
                         <td th:text="${set.reps}"/>
+                        <td th:text="${set.user.getName()}"/>
                     </tr>
                     </tbody>
                 </table>
             </a>
         </ul>
-        <a class="btn btn-dark mt-3" th:href="@{/workout_plans/details/add_exercise/(planId=${plan.id})}">
+        <a th:if="${!read_only}" class="btn btn-dark mt-3" th:href="@{/workout_plans/details/add_exercise/(planId=${plan.id})}">
             + Add exercise
         </a>
         <a class="btn btn-primary mt-3 ms-2" th:href="@{/workout(planId=${plan.id})}">
             <span class="btn-label"><i class="fa fa-play"></i></span>
-            <span th:if="${!plan.isRunning()}">Start workout</span>
-            <span th:if="${plan.isRunning()}">Continue workout</span>
+            <span th:if="${!plan.isRunning(user)}">Start workout</span>
+            <span th:if="${plan.isRunning(user)}">Continue workout</span>
+        </a>
+        <a th:if="${read_only}" class="btn btn-dark mt-3" th:href="@{/workout_plans/details/unfollow(planId=${plan.id})}">
+            Unfollow Workoutplan
         </a>
     </div>
 </div>
