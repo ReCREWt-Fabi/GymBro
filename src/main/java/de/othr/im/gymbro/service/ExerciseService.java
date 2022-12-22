@@ -63,7 +63,7 @@ public class ExerciseService {
     }
 
     public void deleteExercise(final Long id) {
-        if(this.getExercise(id) == null){
+        if (this.getExercise(id) == null) {
             // TODO: Implement Warning
             return;
         } else {
@@ -74,5 +74,9 @@ public class ExerciseService {
 
     public void removeExercisesFromPlan(final WorkoutPlan plan) {
         this.exerciseRepository.removeExercisesFromPlan(plan);
+    }
+
+    public Exercise upsert(final Exercise exercise) {
+        return this.exerciseRepository.save(exercise);
     }
 }

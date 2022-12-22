@@ -29,7 +29,7 @@ public class WorkoutController {
     @RequestMapping({"", "/"})
     public String showWorkoutScreen(final Model model, @RequestParam final Long planId, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         final WorkoutPlan plan = workoutPlanService.getPlan(planId).orElseGet(() -> workoutPlanService.createPlan(userDetails.getUser()));
-        if (plan.getLastCompletedAt() == null || plan.getLastCompletedAt().after(plan.getLastStartedAt())) {
+        if (plan.getLastStartedAt() == null || plan.getLastCompletedAt() != null && plan.getLastStartedAt() != null && plan.getLastCompletedAt().after(plan.getLastStartedAt())) {
             plan.addStartedBy(userDetails.getUser());
             plan.setLastStartedAt(new Date());
             workoutPlanService.updatePlan(plan);
@@ -43,7 +43,7 @@ public class WorkoutController {
     @RequestMapping(method = RequestMethod.POST, value = {"/complete"})
     public String completeWorkout(@RequestParam final Long planId, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         final WorkoutPlan plan = workoutPlanService.getPlan(planId).orElseThrow();
-        if (plan.getLastCompletedAt() == null || plan.getLastCompletedAt().before(plan.getLastStartedAt())) {
+        if (plan.getLastCompletedAt() == null || plan.getLastCompletedAt() != null && plan.getLastStartedAt() != null && plan.getLastCompletedAt().before(plan.getLastStartedAt())) {
             if(plan.removeStartedBy(userDetails.getUser())) {
                 plan.setLastCompletedAt(new Date());
                 workoutPlanService.updatePlan(plan);

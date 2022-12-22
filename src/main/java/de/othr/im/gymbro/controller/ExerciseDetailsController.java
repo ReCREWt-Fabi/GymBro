@@ -46,7 +46,6 @@ public class ExerciseDetailsController {
     @RequestMapping({"/{id}"})
     public String showExerciseDetails(@PathVariable("id") Long id, Model model) {
         Exercise exercise = exerciseService.getExercise(id);
-
         if (exercise != null) {
             List<ExerciseSet> sets = exerciseSetRepository.findSetsByExercise(id);
             model.addAttribute("exercise", exercise);
@@ -92,17 +91,13 @@ public class ExerciseDetailsController {
                                    @Valid @ModelAttribute("set") final ExerciseSet set,
                                    final BindingResult bindingResult,
                                    @AuthenticationPrincipal GymBroUserDetails userDetails) {
-        return trackSet(set, bindingResult, userDetails.getUser());
-    }
-
-    private ModelAndView trackSet(ExerciseSet set, BindingResult result, User user) {
         final ModelAndView mv = new ModelAndView();
-        if (result.hasErrors()) {
-            mv.setViewName("exercise/exercise-details");
+        if (bindingResult.hasFieldErrors("weight") || bindingResult.hasFieldErrors("reps")) {
+            mv.setViewName("redirect:/exercise_details/" + exerciseId + "/track_set");
             return mv;
         }
         set.setCompletedAt(new Date());
-        set.setUser(user);
+        set.setUser(userDetails.getUser());
         exerciseSetRepository.save(set);
         mv.setViewName("redirect:/workout?planId=" + set.getExercise().getPlan().getId());
         return mv;

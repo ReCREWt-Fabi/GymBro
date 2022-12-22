@@ -24,22 +24,18 @@ public class WorkoutPlanService {
     private final EmailService emailService;
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseSetRepository exerciseSetRepository;
-    private final ExerciseRepository exerciseRepository;
-
     @Autowired
-    public WorkoutPlanService(final ExerciseService exerciseService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository, final EmailService emailService, final ExerciseRepository exerciseRepository) {
+    public WorkoutPlanService(final ExerciseService exerciseService, final WorkoutPlanRepository workoutPlanRepository, final ExerciseSetRepository exerciseSetRepository, final EmailService emailService) {
         this.exerciseService = exerciseService;
         this.workoutPlanRepository = workoutPlanRepository;
         this.exerciseSetRepository = exerciseSetRepository;
-        this.exerciseRepository = exerciseRepository;
         this.emailService = emailService;
     }
 
     public List<ExerciseSet> getCompletedSets(final Exercise exercise) {
         final List<ExerciseSet> exerciseSets = exerciseSetRepository.findSetsByExercise(exercise.getId()).stream().filter(ExerciseSet::isCompleted).toList();
         final Map<Integer, List<ExerciseSet>> setsByOrder = exerciseSets.stream().collect(Collectors.groupingBy(ExerciseSet::getOrdering));
-        final List<ExerciseSet> recentCompleted = setsByOrder.values().stream().map(sets -> sets.stream().max(Comparator.comparing(ExerciseSet::getCompletedAt))).filter(Optional::isPresent).map(Optional::get).toList();
-        return recentCompleted;
+        return setsByOrder.values().stream().map(sets -> sets.stream().max(Comparator.comparing(ExerciseSet::getCompletedAt))).filter(Optional::isPresent).map(Optional::get).toList();
     }
 
     public void deletePlan(final Long id) {
@@ -95,4 +91,8 @@ public class WorkoutPlanService {
     }
 
     public List<WorkoutPlan> getAllPlans() { return workoutPlanRepository.findAll(); }
+
+    public WorkoutPlan insertPlan(final WorkoutPlan workoutPlan) {
+        return workoutPlanRepository.save(workoutPlan);
+    }
 }
