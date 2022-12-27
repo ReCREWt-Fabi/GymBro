@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{fragments/base-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GymBro</title>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          referrerpolicy="no-referrer"
+          rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="text-center" style="width: 60%">
+        <h1>Something went wrong! </h1>
+        <h2>Our engineers are on it</h2>
+        <a href="/">Go Home</a>
+    </div>
+</div>
+</body>
+</html>
