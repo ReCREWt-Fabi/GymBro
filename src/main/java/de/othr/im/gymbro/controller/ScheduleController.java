@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 
@@ -38,10 +39,21 @@ public class ScheduleController {
     public String showScheduleScreen(final Model model, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         final List<WorkoutPlan> plans = workoutPlanService.getPlans(userDetails.getUser());
         final Schedule schedule = scheduleService.getSchedule(userDetails.getUser());
+        boolean break_impossible = false;
+        if (schedule.getPauseFrom() != null && schedule.getPauseTo() != null) {
+            break_impossible = schedule.getPauseFrom().after(schedule.getPauseTo()) ||
+                    schedule.getPauseTo().before(new Date());
+        }
         model.addAttribute("plans", plans);
-        model.addAttribute("schedule", schedule);
         model.addAttribute("service", workoutPlanService);
         model.addAttribute("days", Weekday.values());
+        model.addAttribute("break_error", break_impossible);
+        if(break_impossible) {
+            schedule.setPauseFrom(null);
+            schedule.setPauseTo(null);
+            scheduleService.updateSchedule(schedule);
+        }
+        model.addAttribute("schedule", schedule);
         return "workout_plans/schedule";
     }
 

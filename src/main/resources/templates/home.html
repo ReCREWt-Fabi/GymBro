@@ -15,7 +15,15 @@
 
     <div class="text-center" style="width: 60%">
         <h1 class="mb-5">Welcome back!</h1>
-        <div>
+        <div class="text-center" th:if="${schedule.isPaused()}">
+            <p>You currently have a break scheduled!</p>
+            <p>Scheduled from</p>
+            <p class="font-weight-bold" th:text="${schedule.getPauseFrom()}"/>
+            <p>to</p>
+            <p class="font-weight-bold" th:text="${schedule.getPauseTo()}"/>
+            <a class="btn btn-primary mt-2" href="/schedule">Edit your break</a>
+        </div>
+        <div th:if="${!schedule.isPaused()}">
             <h4 class="mb-3">Your current Workouts:</h4>
             <ul class="list-group" th:if="${!plans.isEmpty()}">
                 <a class="list-group-item" th:each="plan : ${plans}"

@@ -65,6 +65,10 @@
                 </form>
             </li>
 
+            <div th:if="${break_error}">
+                <p class="alert alert-danger mt-2">There was an issue creating your break. Please make sure your dates are correct and try again.</p>
+            </div>
+
             <li class="list-group-item text-center p-4" th:if="${schedule.isPauseScheduled()}">
                 <h6>Your workout will be put on hold</h6>
                 <p>From: <span th:text="${schedule.getPauseFrom()}"></span></p>
@@ -86,7 +90,6 @@
                 </form>
             </li>
         </ul>
-
     </div>
 </div>
 </body>

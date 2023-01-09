@@ -58,11 +58,13 @@ public class Schedule {
     }
 
     public boolean isPauseScheduled() {
+        // has scheduled pause
         final Date now = new Date();
         return pauseFrom != null && pauseTo != null && now.before(pauseFrom);
     }
 
     public boolean isPaused() {
+        // is currently paused
         final Date now = new Date();
         return pauseFrom != null && pauseTo != null && now.after(pauseFrom) && now.before(pauseTo);
     }

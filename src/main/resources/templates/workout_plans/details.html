@@ -9,7 +9,10 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div style="width: 60%">
+    <div class="text-center" th:if="${!has_access}">
+        <p>You do not have access to this workout plan!</p>
+    </div>
+    <div style="width: 60%" th:if="${has_access}">
         <h1 class="pb-4">Your Workout Plan</h1>
         <div class="form-group pb-3">
             <h5 th:text="*{name}"/>

@@ -39,11 +39,16 @@ public class WorkoutPlanDetailsController {
     public String showPlanDetails(final Model model, @RequestParam final Long planId,
                                   final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         final WorkoutPlan plan = workoutPlanService.getPlan(planId).orElseGet(() -> workoutPlanService.createPlan(userDetails.getUser()));
+        boolean has_access = false;
+        boolean read_only = true;
         if(Objects.equals(plan.getUser().getId(), userDetails.getUser().getId())) {
-            model.addAttribute("read_only", false);
-        } else {
-            model.addAttribute("read_only", true);
+            read_only = false;
+            has_access = true;
+        } else if (plan.isFollower(userDetails.getUser())) {
+            has_access = true;
         }
+        model.addAttribute("has_access", has_access);
+        model.addAttribute("read_only", read_only);
         model.addAttribute("user", userDetails.getUser());
         model.addAttribute("plan", plan);
         model.addAttribute("exercises", workoutPlanService.getExercises(plan));
