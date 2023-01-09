@@ -6,6 +6,8 @@ import de.othr.im.gymbro.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class ScheduleService {
@@ -15,6 +17,10 @@ public class ScheduleService {
 
     public Schedule getSchedule(final User user) {
         return scheduleRepository.findByUser(user).orElseGet(() -> createSchedule(user));
+    }
+
+    public Optional<Schedule> getScheduleFromId(final long id) {
+        return scheduleRepository.findById(id);
     }
 
     private Schedule createSchedule(User user) {
