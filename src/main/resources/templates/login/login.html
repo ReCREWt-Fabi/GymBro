@@ -6,7 +6,7 @@
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
-    <title>GymBro - Login</title>
+    <title th:text="#{login.title}"/>
 </head>
 <body>
 
@@ -14,30 +14,26 @@
 
     <div align="left" style="width: 60%">
 
-        <h1>Welcome back!</h1>
+        <h1 th:text="#{login.headline}"/>
         <form method="post" th:action="@{login}">
 
             <div class="form-group">
-                <label for="username">E-Mail</label>
+                <label for="username" th:text="#{login.email}"/>
                 <input class="form-control" id="username" name="username" type="text"/>
             </div>
 
             <div class="form-group mt-2">
-                <label for="password">Password</label>
+                <label for="password" th:text="#{login.password}"/>
                 <input class="form-control" id="password" name="password" type="password"/>
             </div>
 
-            <div class="alert alert-danger" th:if="${param.error}">
-                Invalid username and password.
-            </div>
+            <div class="alert alert-danger" th:if="${param.error}" th:text="#{login.error.invalid}"/>
 
-            <div class="alert alert-danger" th:if="${param.logout}">
-                You have been logged out.
-            </div>
+            <div class="alert alert-danger" th:if="${param.logout}" th:text="#{login.logged_out}"/>
 
-            <button type="submit" class="btn btn-primary mt-3">Sign In</button>
-            <button type="submit" class="btn btn-link mt-3">
-                <a href="signup">Not registered yet?</a>
+            <button class="btn btn-primary mt-3" th:text="#{login.signin}" type="submit"/>
+            <button class="btn btn-link mt-3" type="submit">
+                <a href="signup" th:text="#{login.not_registered}"/>
             </button>
         </form>
     </div>

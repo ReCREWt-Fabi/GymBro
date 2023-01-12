@@ -6,26 +6,28 @@
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <title th:text="#{workout_plans.title}"/>
 </head>
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4">Log Workout</h1>
+        <h1 class="pb-4" th:text="#{workout_plans.log.headline}"/>
         <h3 th:text="*{name}"/>
         <form method="post" th:action="@{/workout/complete(planId=${plan.id})}">
             <ul class="list-group">
                 <li class="list-group-item" th:each="exercise : *{exercises}">
                     <div class="p-2 m-0 text-center">
                         <h6>
-                            <a th:text="${exercise.getExerciseInformation().getName()}" th:href="@{|/exercise_details/${exercise.getId()}/|}"></a>
+                            <a th:href="@{|/exercise_details/${exercise.getId()}/|}"
+                               th:text="${exercise.getExerciseInformation().getName()}"></a>
                         </h6>
                     </div>
                     <table class="mt-2 table" style="width: 60%">
                         <thead>
                         <tr>
-                            <th scope="col">SET</th>
-                            <th scope="col">KG</th>
-                            <th scope="col">REPS</th>
+                            <th scope="col" th:text="#{workout_plans.log.set}"/>
+                            <th scope="col" th:text="#{workout_plans.log.weight}"/>
+                            <th scope="col" th:text="#{workout_plans.log.reps}"/>
                             <th scope="col"><i class="fa fa-check" style="color: black"></i></th>
                         </tr>
                         </thead>
@@ -36,37 +38,36 @@
                             <td th:text="${set.reps}"/>
                             <td>
                                 <a class="btn btn-light"
-                                   th:if="${!service.isSetCompletedInCurrentWorkout(plan, set)}"
-                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set?setId=${set.getId()}|}">
+                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set?setId=${set.getId()}|}"
+                                   th:if="${!service.isSetCompletedInCurrentWorkout(plan, set)}">
                                     <span class="btn-label"><i class="fa fa-check"></i></span>
                                 </a>
-                                <a type="button" class="btn btn-success"
+                                <a class="btn btn-success" th:href="@{|/exercise_details/${exercise.getId()}/track_set?setId=${set.getId()}|}"
                                    th:if="${service.isSetCompletedInCurrentWorkout(plan, set)}"
-                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set?setId=${set.getId()}|}">
+                                   type="button">
                                     <span class="btn-label"><i class="fa fa-check"></i></span>
                                 </a>
                                 <a class="btn btn-danger ms-1"
-                                   th:if = "${iter.last}"
-                                   th:href="@{|/exercise_details/${exercise.getId()}/delete_set/${set.getId()}|}">
+                                   th:href="@{|/exercise_details/${exercise.getId()}/delete_set/${set.getId()}|}"
+                                   th:if="${iter.last}">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4" class="text-center">
+                            <td class="text-center" colspan="4">
                                 <a class="btn btn-dark"
-                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set/|}">
-                                    + Add set
-                                </a>
+                                   th:href="@{|/exercise_details/${exercise.getId()}/track_set/|}"
+                                   th:text="#{workout_plans.log.add}"/>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </li>
             </ul>
-            <button type="submit" class="btn btn-labeled btn-success mt-3">
+            <button class="btn btn-labeled btn-success mt-3" type="submit">
                 <span class="btn-label"><i class="fa fa-check"></i></span>
-                Finish workout
+                <span th:text="#{workout_plans.log.submit}"/>
             </button>
         </form>
     </div>

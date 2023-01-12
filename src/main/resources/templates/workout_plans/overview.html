@@ -6,14 +6,15 @@
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <title th:text="#{workout_plans.title}"/>
 </head>
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4">Your Workout Plans</h1>
+        <h1 class="pb-4" th:text="#{workout_plans.overview.headline}"/>
 
         <div th:if="${plans.isEmpty()}">
-            <p>You have no workout plans yet. Create one now!</p>
+            <p th:text="#{workout_plans.overview.info}"/>
         </div>
 
         <ul class="list-group" th:if="${!plans.isEmpty()}">
@@ -21,12 +22,14 @@
                th:href="@{/workout_plans/details(planId=${plan.getId()})}">
                 <div class="container-fluid p-2 m-0 text-center">
                     <h6 class="d-inline" th:text="${plan.name}"/>
-                    <form class="d-inline float-end ms-1" method="post" th:action="@{/workout_plans/delete(planId=${plan.getId()})}">
+                    <form class="d-inline float-end ms-1" method="post"
+                          th:action="@{/workout_plans/delete(planId=${plan.getId()})}">
                         <button class="btn btn-light d-inline float-end" type="submit">
                             <i class="fa fa-trash"></i>
                         </button>
                     </form>
-                    <form class="d-inline float-end" method="post" th:action="@{/workout_plans/{id}/share(id=${plan.id})}">
+                    <form class="d-inline float-end" method="post"
+                          th:action="@{/workout_plans/{id}/share(id=${plan.id})}">
                         <button class="btn btn-light d-inline float-end" type="submit">
                             <i class="fa fa-share"></i>
                         </button>
@@ -36,7 +39,7 @@
             </a>
         </ul>
 
-        <a class="btn btn-primary mt-3" href="/workout_plans/create">Create new plan</a>
+        <a class="btn btn-primary mt-3" href="/workout_plans/create" th:text="#{workout_plans.overview.new}"/>
     </div>
 </div>
 </body>

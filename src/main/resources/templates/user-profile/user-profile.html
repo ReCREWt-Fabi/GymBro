@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="~{fragments/logged-in-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>GymBro - Profile</title>
+    <title th:text="#{profile.title}"/>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
@@ -11,42 +11,42 @@
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4">User Profile</h1>
+        <h1 class="pb-4" th:text="#{profile.headline}"/>
         <div class="text-start">
             <p class="pb-3">
-                <span class="fw-bold">Username: </span>
+                <span class="fw-bold" th:text="#{profile.name}"/>:
                 <span th:text="${userData.name}"/>
             </p>
             <p class="pb-3">
-                <span class="fw-bold">E-Mail: </span>
+                <span class="fw-bold" th:text="#{profile.email}"/>:
                 <span th:text="${userData.email}"/>
             </p>
             <p class="pb-3">
-                <span class="fw-bold">Birthday: </span>
+                <span class="fw-bold" th:text="#{profile.birthday}"/>:
                 <span th:text="${userData.birthDate != null} ? ${#temporals.format(userData.birthDate, 'dd.MM.yyyy')} : 'Not specified'"/>
             </p>
             <p class="pb-3">
-                <span class="fw-bold">Height: </span>
+                <span class="fw-bold" th:text="#{profile.height}"/>
                 <span th:text="${userData.height != 0} ? ${userData.height} + 'kg' : 'Not specified'"/>
             </p>
             <p class="pb-3">
-                <span class="fw-bold">Weight: </span>
+                <span class="fw-bold" th:text="#{profile.weight}"/>
                 <span th:text="${userData.weight != 0} ? ${userData.weight} + 'cm' : 'Not specified'"/>
             </p>
             <p class="pb-3">
-                <span class="fw-bold">Rest time: </span>
+                <span class="fw-bold" th:text="#{profile.rest_time}"/>
                 <span th:text="${userData.restTime != 0} ? ${userData.restTime} + ' min' : 'Not specified'"/>
             </p>
             <p class="pb-3">
-                <span class="fw-bold">Gender: </span>
+                <span class="fw-bold" th:text="#{profile.gender}"/>
                 <span th:text="${userData.gender != null} ? ${userData.gender.label} : 'Not specified'"/>
             </p>
             <p class="pb-3">
-                <span class="fw-bold">Workout Goal: </span>
+                <span class="fw-bold" th:text="#{profile.workout_goal}"/>
                 <span th:text="${userData.workoutGoal != null} ? ${userData.workoutGoal.label} : 'Not specified'"/>
             </p>
         </div>
-        <a class="btn btn-primary" href="user_profile/edit">Edit Profile</a>
+        <a class="btn btn-primary" href="user_profile/edit" th:text="#{profile.edit.edit}"/>
     </div>
 </div>
 </body>

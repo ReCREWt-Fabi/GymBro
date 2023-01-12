@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="~{fragments/logged-in-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>GymBro</title>
+    <title th:text="#{common.appname}"/>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer"
           rel="stylesheet"/>
@@ -14,17 +14,17 @@
 <div layout:fragment="content">
 
     <div class="text-center" style="width: 60%">
-        <h1 class="mb-5">Welcome back!</h1>
+        <h1 class="mb-5" th:text="#{home.headline}"/>
         <div class="text-center" th:if="${schedule.isPaused()}">
-            <p>You currently have a break scheduled!</p>
-            <p>Scheduled from</p>
+            <p th:text="#{home.break}"/>
+            <p th:text="#{home.scheduled}"/>
             <p class="font-weight-bold" th:text="${schedule.getPauseFrom()}"/>
-            <p>to</p>
+            <p th:text="#{home.to}"/>
             <p class="font-weight-bold" th:text="${schedule.getPauseTo()}"/>
-            <a class="btn btn-primary mt-2" href="/schedule">Edit your break</a>
+            <a class="btn btn-primary mt-2" href="/schedule" th:text="#{home.edit_break}"/>
         </div>
         <div th:if="${!schedule.isPaused()}">
-            <h4 class="mb-3">Your current Workouts:</h4>
+            <h4 class="mb-3" th:text="#{home.current_workouts}"/>
             <ul class="list-group" th:if="${!plans.isEmpty()}">
                 <a class="list-group-item" th:each="plan : ${plans}"
                    th:href="@{/workout_plans/details(planId=${plan.getId()})}">
@@ -35,7 +35,7 @@
                 </a>
             </ul>
             <div class="template p-4" th:if="${plans.isEmpty()}">
-                <p class="mb-0">No workout running at the moment…</p>
+                <p class="mb-0" th:text="#{home.no_workout}"/>
             </div>
         </div>
 

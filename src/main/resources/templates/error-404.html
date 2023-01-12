@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="~{fragments/base-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>GymBro</title>
+    <title th:text="#{common.appname}"/>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer"
           rel="stylesheet"/>
@@ -14,9 +14,9 @@
 <div layout:fragment="content">
 
     <div class="text-center" style="width: 60%">
-        <h1>404 - This is not the page you are looking for!</h1>
-        <h2>This page does not exist.</h2>
-        <a href="/">Go Home</a>
+        <h1 th:text="#{error.not_found.headline}"/>
+        <h2 th:text="#{error.not_found.info}"/>
+        <a href="/" th:text="#{error.not_found.back}"/>
     </div>
 </div>
 </body>

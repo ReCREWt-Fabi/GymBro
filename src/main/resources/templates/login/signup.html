@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="~{fragments/base-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>GymBro - Signup</title>
+    <title th:text="#{signup.title}"/>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
@@ -14,32 +14,32 @@
 
     <div align="left" style="width: 60%">
 
-        <h1>Sign up for GymBro!</h1>
+        <h1 th:text="#{signup.headline}"/>
         <form method="post" th:action="@{/unauthenticated/signup}" th:object="${userForm}">
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="name" th:text="#{signup.name}"/>
                 <input class="form-control" id="name" th:field="*{name}" type="text"/>
                 <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}"
                    th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"/>
             </div>
 
             <div class="form-group mt-2">
-                <label for="email">E-Mail</label>
+                <label for="email" th:text="#{signup.email}"/>
                 <input class="form-control" id="email" th:field="*{email}" type="text"/>
                 <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}"
                    th:text="${#strings.listJoin(#fields.errors('email'), ', ')}"/>
             </div>
 
             <div class="form-group mt-2">
-                <label for="password">Password</label>
+                <label for="password" th:text="#{signup.password}"/>
                 <input class="form-control" id="password" th:field="*{password}" type="text"/>
                 <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
                    th:text="${#strings.listJoin(#fields.errors('password'), ', ')}"/>
             </div>
 
-            <button class="btn btn-primary mt-3" type="submit">Sign Up</button>
+            <button class="btn btn-primary mt-3" th:text="#{signup.submit}" type="submit"/>
             <button class="btn btn-link mt-3" type="submit">
-                <a href="login">Already have an account?</a>
+                <a href="login" th:text="#{signup.already_registered}"/>
             </button>
         </form>
     </div>

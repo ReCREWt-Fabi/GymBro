@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="~{fragments/base-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>GymBro - Share Plan</title>
+    <title th:text="#{workout_plans.share.title}"/>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
@@ -14,18 +14,18 @@
 
     <div align="left" style="width: 60%">
 
-        <h1>Share a workout plan</h1>
+        <h1 th:text="#{workout_plans.share.headline}"/>
         <form method="post" th:action="@{/workout_plans/{id}/share/submit(id=${planId})}" th:object="${userData}">
 
             <div class="form-group">
-                <label for="email">E-Mail</label>
+                <label for="email" th:text="#{workout_plans.share.email}"/>
                 <input class="form-control" id="email" th:field="*{email}" type="text"/>
                 <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}"
                    th:text="${#strings.listJoin(#fields.errors('email'), ', ')}"/>
             </div>
 
-            <button class="btn btn-primary mt-3" type="submit">Share Plan</button>
-            <a class="btn btn-link mt-3" href="/workout_plans">Cancel</a>
+            <button class="btn btn-primary mt-3" th:text="#{workout_plans.share.submit}" type="submit"/>
+            <a class="btn btn-link mt-3" href="/workout_plans" th:text="#{common.cancel}"/>
         </form>
     </div>
 </div>

@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="~{fragments/base-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>GymBro</title>
+    <title th:text="#{common.appname}"/>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer"
           rel="stylesheet"/>
@@ -14,9 +14,9 @@
 <div layout:fragment="content">
 
     <div class="text-center" style="width: 60%">
-        <h1>Something went wrong! </h1>
-        <h2>Our engineers are on it</h2>
-        <a href="/">Go Home</a>
+        <h1 th:text="#{error.other.headline}"/>
+        <h2 th:text="#{error.other.info}"/>
+        <a href="/" th:text="#{error.other.back}"/>
     </div>
 </div>
 </body>

@@ -6,29 +6,30 @@
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <title th:text="#{onboarding.title}"/>
 </head>
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-2">Your Body</h1>
-        <p class="pb-4">Please tell us some of your body measures, so you can track your progress better!</p>
+        <h1 class="pb-2" th:text="#{onboarding.current.headline}"/>
+        <p class="pb-4" th:text="#{onboarding.current.info}"/>
         <form class="text-start" method="post" th:action="@{/onboarding/current/submit}" th:object="${userData}">
 
             <div class="form-group pb-3">
-                <label class="pb-2" for="height">Height (in cm)</label>
+                <label class="pb-2" for="height" th:text="#{onboarding.current.height}"/>
                 <input class="form-control" id="height" th:field="*{height}" type="number"/>
                 <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('height')}"
                    th:text="${#strings.listJoin(#fields.errors('height'), ', ')}"/>
             </div>
 
             <div class="form-group pb-3">
-                <label class="pb-2" for="weight">Weight (in kg)</label>
+                <label class="pb-2" for="weight" th:text="#{onboarding.current.weight}"/>
                 <input class="form-control" id="weight" th:field="*{weight}" type="number"/>
                 <p class="alert alert-danger mt-2" role="alert" th:if="${#fields.hasErrors('weight')}"
                    th:text="${#strings.listJoin(#fields.errors('weight'), ', ')}"/>
             </div>
 
-            <button class="btn btn-primary" type="submit">Next</button>
+            <button class="btn btn-primary" th:text="#{common.next}" type="submit"/>
         </form>
     </div>
 </div>

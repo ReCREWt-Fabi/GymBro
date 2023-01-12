@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="~{fragments/logged-in-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>GymBro - Exercise Details</title>
+    <title th:text="#{exercise_details.title}"/>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
@@ -11,16 +11,16 @@
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4">Exercise Details - <span th:if="${exercise.exerciseInformation != null}"
+        <h1 class="pb-4"><span th:text="#{exercise_details.headline}"> <span th:if="${exercise.exerciseInformation != null}"
                                                   th:text="${exercise.exerciseInformation.name}"/></h1>
         <div th:if="${exercise.exerciseInformation} != null">
             <div class="text-start">
                 <p class="pb-1">
-                    <span class="fw-bold">Description: </span>
+                    <span class="fw-bold" th:text="#{exercise_details.description}"/>
                     <span th:text="${exercise.exerciseInformation.description != null} ? ${exercise.exerciseInformation.description} : 'Not specified'"/>
                 </p>
                 <div class="pb-3">
-                    <span class="fw-bold">Categories: </span>
+                    <span class="fw-bold" th:text="#{exercise_details.categories}"/>
                     <span th:text="${exercise.exerciseInformation.category.label}"/>
                 </div>
                 <div class="embed-responsive embed-responsive-16by9"
@@ -30,26 +30,26 @@
                 </div>
             </div>
         </div>
-        <h4 class="pb-2">Completed Sets</h4>
+        <h4 class="pb-2" th:text="#{exercise_details.sets}"/>
         <ul class="list-group mb-3">
             <li class="list-group-item" th:each="set : ${sets}">
                 <div class="p-2">
                     <p class="py-1">
-                        <span class="fw-bold">Reps: </span>
+                        <span class="fw-bold" th:text="#{exercise_details.reps}"/>
                         <span th:text="${set.reps != 0} ? ${set.reps} : 'Not specified'"/>
                     </p>
                     <p class="pb-1">
-                        <span class="fw-bold">Weight (in kg): </span>
+                        <span class="fw-bold" th:text="#{exercise_details.weight}"/>
                         <span th:text="${set.weight != 0} ? ${set.weight} : '-'"/>
                     </p>
 
                     <p class="pb-1">
-                        <span class="fw-bold">Completed At: </span>
+                        <span class="fw-bold" th:text="#{exercise_details.completed}"/>
                         <span th:text="${set.completedAt != null} ? ${#dates.format(set.completedAt, 'dd.MM.yyyy')} : 'Not completed'"/>
                     </p>
 
                     <p>
-                        <span class="fw-bold">Notes: </span>
+                        <span class="fw-bold" th:text="#{exercise_details.notes}"/>
                         <span th:text="${set.notes != null} ? ${set.notes} : '-'"/>
                     </p>
                 </div>

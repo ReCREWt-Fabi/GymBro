@@ -6,31 +6,34 @@
           referrerpolicy="no-referrer" rel="stylesheet"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <title th:text="#{workout_plans.title}"/>
 </head>
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4" th:if="${planId} != null">Select Exercise</h1>
-        <h1 class="pb-4" th:if="${planId} == null">Exercise Catalogue</h1>
+        <h1 class="pb-4" th:if="${planId} != null" th:text="#{workout_plans.select.headline}"/>
+        <h1 class="pb-4" th:if="${planId} == null" th:text="#{workout_plans.select.info}"/>
         <div>
             <form method="post" th:action="@{/exercises/filter(planId=${planId})}" th:object="${filter}">
-                <input class="form-control mt-3 mb-2" name="search" placeholder="Search" type="text"
-                       th:field="*{query}"/>
-                <button class="btn btn-primary" type="submit">Search</button>
+                <input class="form-control mt-3 mb-2" name="search" placeholder="Search" th:field="*{query}"
+                       type="text"/>
+                <button class="btn btn-primary" th:text="#{workout_plans.select.search}" type="submit"/>
             </form>
             <form method="post" th:action="@{/exercises/reset_filter(planId=${planId})}">
-                <button class="btn btn-link mt-1" type="submit">Reset Filter</button>
+                <button class="btn btn-link mt-1" th:text="#{workout_plans.select.reset}" type="submit"/>
             </form>
         </div>
         <div class="list-group text-start mt-3">
             <div class="list-group-item" th:each="exercise: ${exercises}">
                 <h4 class="list-group-item-heading" th:text="${exercise.name}"/>
                 <div class="list-group-item-text">
-                    <p><span class="fw-bold">Target: </span><span th:text="${exercise.category.label}"/></p>
-                    <p><span class="fw-bold">Description: </span><span th:text="${exercise.description}"/></p>
+                    <p><span class="fw-bold" th:text="#{workout_plans.select.target}"/><span
+                            th:text="${exercise.category.label}"/></p>
+                    <p><span class="fw-bold" th:text="#{workout_plans.select.description}"/><span
+                            th:text="${exercise.description}"/></p>
                 </div>
                 <a class="btn btn-primary" th:href="@{/exercises/{id}/submit(id=${exercise.id}, planId=${planId})}"
-                   th:if="${planId} != null">Select</a>
+                   th:if="${planId} != null" th:text="#{workout_plans.select.add}"/>
             </div>
         </div>
     </div>

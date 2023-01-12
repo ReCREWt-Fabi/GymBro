@@ -12,28 +12,28 @@
 
 <ul class="navbar-nav mr-auto" layout:fragment="nav-left">
     <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/" th:text="#{nav.home}"/>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/workout_plans">Workout Plans</a>
+        <a class="nav-link" href="/workout_plans" th:text="#{nav.workout_plans}"/>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/schedule">Schedule</a>
+        <a class="nav-link" href="/schedule" th:text="#{nav.schedule}"/>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/user_profile">Profile</a>
+        <a class="nav-link" href="/user_profile" th:text="#{nav.profile}"/>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/about">About</a>
+        <a class="nav-link" href="/about" th:text="#{nav.about}"/>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/followed">Followed</a>
+        <a class="nav-link" href="/followed" th:text="#{nav.followed}"/>
     </li>
 </ul>
 
 <ul class="navbar-nav ml-auto" layout:fragment="nav-right">
     <li class="nav-item">
-        <a class="nav-link alert-danger" href="/unauthenticated/prelogout">Logout</a>
+        <a class="nav-link alert-danger" href="/unauthenticated/prelogout" th:text="#{common.logout}"/>
     </li>
 </ul>
 
