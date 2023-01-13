@@ -27,9 +27,9 @@
             <div class="list-group-item" th:each="exercise: ${exercises}">
                 <h4 class="list-group-item-heading" th:text="${exercise.name}"/>
                 <div class="list-group-item-text">
-                    <p><span class="fw-bold" th:text="#{workout_plans.select.target}"/><span
+                    <p><span class="fw-bold" th:text="#{workout_plans.select.target}"/> <span
                             th:text="${exercise.category.label}"/></p>
-                    <p><span class="fw-bold" th:text="#{workout_plans.select.description}"/><span
+                    <p><span class="fw-bold" th:text="#{workout_plans.select.description}"/> <span
                             th:text="${exercise.description}"/></p>
                 </div>
                 <a class="btn btn-primary" th:href="@{/exercises/{id}/submit(id=${exercise.id}, planId=${planId})}"

@@ -11,8 +11,8 @@
 <body>
 <div layout:fragment="content">
     <div style="width: 60%">
-        <h1 class="pb-4"><span th:text="#{exercise_details.headline}"> <span th:if="${exercise.exerciseInformation != null}"
-                                                  th:text="${exercise.exerciseInformation.name}"/></h1>
+        <h1 class="pb-4"><span th:text="#{exercise_details.headline}"/>
+            <span th:if="${exercise.exerciseInformation != null}" th:text="${exercise.exerciseInformation.name}"/></h1>
         <div th:if="${exercise.exerciseInformation} != null">
             <div class="text-start">
                 <p class="pb-1">

@@ -1,4 +1,4 @@
-package de.othr.im.gymbro.controller;
+package de.othr.im.gymbro.controller.rest;
 
 import de.othr.im.gymbro.config.GymBroUserDetails;
 import de.othr.im.gymbro.model.User;

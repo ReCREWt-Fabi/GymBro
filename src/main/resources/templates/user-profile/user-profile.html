@@ -12,39 +12,39 @@
 <div layout:fragment="content">
     <div style="width: 60%">
         <h1 class="pb-4" th:text="#{profile.headline}"/>
-        <div class="text-start">
-            <p class="pb-3">
+            <ul class="list-group text-start mb-4">
+                <li class="list-group-item pt-3 pb-3">
                 <span class="fw-bold" th:text="#{profile.name}"/>:
                 <span th:text="${userData.name}"/>
-            </p>
-            <p class="pb-3">
+            </li>
+            <li class="list-group-item pt-3 pb-3">
                 <span class="fw-bold" th:text="#{profile.email}"/>:
                 <span th:text="${userData.email}"/>
-            </p>
-            <p class="pb-3">
+            </li>
+            <li class="list-group-item pt-3 pb-3">
                 <span class="fw-bold" th:text="#{profile.birthday}"/>:
                 <span th:text="${userData.birthDate != null} ? ${#temporals.format(userData.birthDate, 'dd.MM.yyyy')} : 'Not specified'"/>
-            </p>
-            <p class="pb-3">
-                <span class="fw-bold" th:text="#{profile.height}"/>
-                <span th:text="${userData.height != 0} ? ${userData.height} + 'kg' : 'Not specified'"/>
-            </p>
-            <p class="pb-3">
-                <span class="fw-bold" th:text="#{profile.weight}"/>
-                <span th:text="${userData.weight != 0} ? ${userData.weight} + 'cm' : 'Not specified'"/>
-            </p>
-            <p class="pb-3">
-                <span class="fw-bold" th:text="#{profile.rest_time}"/>
+            </li>
+            <li class="list-group-item pt-3 pb-3">
+                <span class="fw-bold" th:text="#{profile.height}"/>:
+                <span th:text="${userData.height != 0} ? ${userData.height} + 'cm' : 'Not specified'"/>
+            </li>
+            <li class="list-group-item pt-3 pb-3">
+                <span class="fw-bold" th:text="#{profile.weight}"/>:
+                <span th:text="${userData.weight != 0} ? ${userData.weight} + 'kg' : 'Not specified'"/>
+            </li>
+            <li class="list-group-item pt-3 pb-3">
+                <span class="fw-bold" th:text="#{profile.rest_time}"/>:
                 <span th:text="${userData.restTime != 0} ? ${userData.restTime} + ' min' : 'Not specified'"/>
-            </p>
-            <p class="pb-3">
-                <span class="fw-bold" th:text="#{profile.gender}"/>
+            </li>
+            <li class="list-group-item pt-3 pb-3">
+                <span class="fw-bold" th:text="#{profile.gender}"/>:
                 <span th:text="${userData.gender != null} ? ${userData.gender.label} : 'Not specified'"/>
-            </p>
-            <p class="pb-3">
-                <span class="fw-bold" th:text="#{profile.workout_goal}"/>
+            </li>
+            <li class="list-group-item pt-3 pb-3">
+                <span class="fw-bold" th:text="#{profile.workout_goal}"/>:
                 <span th:text="${userData.workoutGoal != null} ? ${userData.workoutGoal.label} : 'Not specified'"/>
-            </p>
+            </li>
         </div>
         <a class="btn btn-primary" href="user_profile/edit" th:text="#{profile.edit.edit}"/>
     </div>

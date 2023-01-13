@@ -1,20 +1,17 @@
-package de.othr.im.gymbro.controller;
+package de.othr.im.gymbro.controller.rest;
 
 import de.othr.im.gymbro.config.GymBroUserDetails;
 import de.othr.im.gymbro.model.Schedule;
 import de.othr.im.gymbro.model.User;
-import de.othr.im.gymbro.model.WorkoutPlan;
 import de.othr.im.gymbro.repository.UserRepository;
 import de.othr.im.gymbro.rest.EntityNotFoundException;
 import de.othr.im.gymbro.rest.InvalidAccessException;
 import de.othr.im.gymbro.service.ScheduleService;
-import de.othr.im.gymbro.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
