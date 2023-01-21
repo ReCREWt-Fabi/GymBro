@@ -1,9 +1,7 @@
 package de.othr.im.gymbro.controller;
 
 import de.othr.im.gymbro.config.GymBroUserDetails;
-import de.othr.im.gymbro.model.Exercise;
 import de.othr.im.gymbro.model.WorkoutPlan;
-import de.othr.im.gymbro.service.ExerciseService;
 import de.othr.im.gymbro.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,12 +42,12 @@ public class WorkoutController {
     public String completeWorkout(@RequestParam final Long planId, final @AuthenticationPrincipal GymBroUserDetails userDetails) {
         final WorkoutPlan plan = workoutPlanService.getPlan(planId).orElseThrow();
         if (plan.getLastCompletedAt() == null || plan.getLastCompletedAt() != null && plan.getLastStartedAt() != null && plan.getLastCompletedAt().before(plan.getLastStartedAt())) {
-            if(plan.removeStartedBy(userDetails.getUser())) {
+            if (plan.removeStartedBy(userDetails.getUser())) {
                 plan.setLastCompletedAt(new Date());
                 workoutPlanService.updatePlan(plan);
             } else {
                 // TODO: treat error,
-                return "redirect:/home";
+                return "redirect:/";
             }
         }
         return "redirect:/workout_plans";

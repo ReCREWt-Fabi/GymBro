@@ -1,11 +1,11 @@
 package de.othr.im.gymbro.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.*;
-
-import static java.lang.System.in;
 
 @Entity
 @Table(name = "workout_plan")
@@ -46,6 +46,7 @@ public class WorkoutPlan {
             name = "plan_follower",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "plan_id"))
+    @JsonManagedReference
     private List<User> followers;
 
     public Long getId() {
@@ -76,10 +77,14 @@ public class WorkoutPlan {
         return followers;
     }
 
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
+
     public boolean isFollower(User user) {
         boolean result = false;
-        for(User u : this.getFollowers()) {
-            if(Objects.equals(u.getId(), user.getId())) {
+        for (User u : this.getFollowers()) {
+            if (Objects.equals(u.getId(), user.getId())) {
                 result = true;
                 break;
             }
@@ -87,15 +92,11 @@ public class WorkoutPlan {
         return result;
     }
 
-    public void setFollowers(List<User> followers) {
-        this.followers = followers;
-    }
-
     public boolean removeFollower(User user) {
         boolean result = false;
-        for(int i = 0; i < this.followers.size(); i++) {
+        for (int i = 0; i < this.followers.size(); i++) {
             User current = this.followers.get(i);
-            if(Objects.equals(current.getId(), user.getId())) {
+            if (Objects.equals(current.getId(), user.getId())) {
                 this.followers.remove(i);
                 result = true;
                 break;
@@ -133,9 +134,13 @@ public class WorkoutPlan {
         this.days = days;
     }
 
-    public void setStarted_by(List<User> users) { this.startedBy = users; }
+    public List<User> getStarted_by() {
+        return this.startedBy;
+    }
 
-    public List<User> getStarted_by() { return this.startedBy; }
+    public void setStarted_by(List<User> users) {
+        this.startedBy = users;
+    }
 
     public void addStartedBy(User user) {
         if (!this.inStartedBy(user)) {
@@ -145,7 +150,7 @@ public class WorkoutPlan {
 
     public boolean removeStartedBy(User user) {
         boolean result = false;
-        for(int i = 0; i<this.startedBy.size(); i++) {
+        for (int i = 0; i < this.startedBy.size(); i++) {
             if (Objects.equals(this.startedBy.get(i).getId(), user.getId())) {
                 this.startedBy.remove(i);
                 result = true;
@@ -157,7 +162,7 @@ public class WorkoutPlan {
 
     public boolean inStartedBy(User user) {
         boolean result = false;
-        for(User scope : this.startedBy) {
+        for (User scope : this.startedBy) {
             if (Objects.equals(scope.getId(), user.getId())) {
                 result = true;
                 break;

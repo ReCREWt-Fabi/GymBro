@@ -1,6 +1,7 @@
 package de.othr.im.gymbro.controller.rest;
 
 import de.othr.im.gymbro.config.GymBroUserDetails;
+import de.othr.im.gymbro.model.ShareWithUserRequest;
 import de.othr.im.gymbro.model.User;
 import de.othr.im.gymbro.model.WorkoutPlan;
 import de.othr.im.gymbro.repository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -54,7 +56,8 @@ public class FollowedPlansAPIController {
             throw new EntityNotFoundException();
         }
 
-        if (plan.get().getFollowers().contains(user.getUser())) {
+        boolean isUserFollowing = plan.get().getFollowers().stream().anyMatch(u -> Objects.equals(u.getId(), user.getUser().getId()));
+        if (isUserFollowing) {
             throw new EntityAlreadyExistsException("User already follows this plan");
         }
 
@@ -65,9 +68,7 @@ public class FollowedPlansAPIController {
     }
 
     @PostMapping("/share/{id}")
-    public ResponseEntity<WorkoutPlan> shareWorkout(@PathVariable("id") long id,
-                                                    @RequestBody final User to,
-                                                    @AuthenticationPrincipal final GymBroUserDetails user) {
+    public ResponseEntity<WorkoutPlan> shareWorkout(@PathVariable("id") long id, @RequestBody final ShareWithUserRequest to) {
         if (to.getEmail() == null) {
             throw new EntityNotFoundException();
         }
@@ -77,8 +78,12 @@ public class FollowedPlansAPIController {
             throw new EntityNotFoundException();
         }
 
-        if (plan.get().getFollowers().contains(to)) {
-            throw new EntityAlreadyExistsException("User already follows this plan");
+        boolean isUserFollowing = plan.get().getFollowers()
+                .stream()
+                .anyMatch(u -> Objects.equals(u.getEmail().toLowerCase(), to.getEmail().toLowerCase()));
+
+        if (isUserFollowing) {
+            throw new EntityAlreadyExistsException("User already invited to this plan");
         }
 
         workoutPlanService.sharePlan(id, to.getEmail());
@@ -94,11 +99,12 @@ public class FollowedPlansAPIController {
             throw new EntityNotFoundException();
         }
 
-        if (plan.get().getFollowers().contains(user.getUser())) {
+        boolean isUserFollowing = plan.get().getFollowers().stream().anyMatch(u -> Objects.equals(u.getId(), user.getUser().getId()));
+        if (!isUserFollowing) {
             throw new EntityNotFoundException();
         }
 
-        plan.get().getFollowers().remove(user.getUser());
+        plan.get().getFollowers().removeIf(u -> Objects.equals(u.getId(), user.getUser().getId()));
         workoutPlanService.updatePlan(plan.get());
 
         return ResponseEntity.ok().body(plan.get());

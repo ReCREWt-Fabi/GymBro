@@ -1,5 +1,7 @@
 package de.othr.im.gymbro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -27,6 +29,7 @@ public class User {
     private String email;
 
     @Size(min = 6, message = "Password must contain at least 6 characters!")
+    @JsonIgnore
     private String password;
 
     @Min(value = 0, message = "Height must be positive!")
@@ -42,6 +45,7 @@ public class User {
     private int restTime;
 
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<WorkoutPlan> followedPlans;
 
     // @NotZeroEnum(message = "Please specify your gender")
@@ -137,22 +141,24 @@ public class User {
         return followedPlans;
     }
 
-    public void addFollowedPlan(WorkoutPlan plan) { this.followedPlans.add(plan); }
+    public void setFollowedPlans(List<WorkoutPlan> followedPlans) {
+        this.followedPlans = followedPlans;
+    }
+
+    public void addFollowedPlan(WorkoutPlan plan) {
+        this.followedPlans.add(plan);
+    }
 
     public boolean removeFollowedPlan(WorkoutPlan plan) {
         boolean result = false;
-        for(int i = 0; i < this.followedPlans.size(); i++) {
+        for (int i = 0; i < this.followedPlans.size(); i++) {
             WorkoutPlan current = this.followedPlans.get(i);
-            if(Objects.equals(current.getId(), plan.getId())) {
+            if (Objects.equals(current.getId(), plan.getId())) {
                 this.followedPlans.remove(i);
                 result = true;
                 break;
             }
         }
         return result;
-    }
-
-    public void setFollowedPlans(List<WorkoutPlan> followedPlans) {
-        this.followedPlans = followedPlans;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -52,7 +53,8 @@ public class WorkoutPlansController {
         Optional<WorkoutPlan> plan = workoutPlanService.getPlan(id);
         if (plan.isPresent()) {
             User user = userDetails.getUser();
-            if (plan.get().getFollowers().contains(user)) {
+            boolean isUserFollowing = plan.get().getFollowers().stream().anyMatch(u -> Objects.equals(u.getId(), user.getId()));
+            if (isUserFollowing) {
                 model.addAttribute("result", "You already follow this plan!");
                 model.addAttribute("plan", plan.get());
             } else {
@@ -78,7 +80,6 @@ public class WorkoutPlansController {
         mv.setViewName("redirect:/workout_plans");
         return mv;
     }
-
 
 
 }

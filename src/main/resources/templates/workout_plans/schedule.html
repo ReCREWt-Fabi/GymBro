@@ -52,7 +52,7 @@
                     <input hidden id="user" th:field="*{user}"/>
 
                     <div class="form-group pb-3">
-                        <label class="pb-2" for="pauseFrom" th:text="#{workout_plans.schedule.pause.from}"/>>
+                        <label class="pb-2" for="pauseFrom" th:text="#{workout_plans.schedule.pause.from}"/>
                         <input class="form-control" id="pauseFrom" th:field="*{pauseFrom}" type="date"/>
                         <p class="alert alert-danger mt-2" th:if="${#fields.hasErrors('pauseFrom')}"
                            th:text="${#strings.listJoin(#fields.errors('pauseFrom'), ', ')}"/>

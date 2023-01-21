@@ -33,7 +33,7 @@ public class SecurityConfiguration {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/unauthenticated/**", "/api/authenticate/**", "/error/**", "/webjars/**", "/css/**").permitAll()
                 .anyRequest().authenticated()
-                .and().csrf().disable().formLogin().loginPage("/unauthenticated/login").defaultSuccessUrl("/home")
+                .and().csrf().disable().formLogin().loginPage("/unauthenticated/login").defaultSuccessUrl("/")
                 .and().logout().logoutUrl("/unauthenticated/logout").logoutSuccessUrl("/unauthenticated/login?logout").invalidateHttpSession(true).clearAuthentication(true)
                 .permitAll();
 

@@ -54,6 +54,7 @@ public class UserProfileController {
         User currentUser = userDetails.getUser();
         formResult.setId(currentUser.getId());
         formResult.setPassword(currentUser.getPassword());
+        formResult.setFollowedPlans(currentUser.getFollowedPlans());
         userDetails.setUser(formResult);
         return userProfileService.updateUser(formResult, bindingResult);
     }
